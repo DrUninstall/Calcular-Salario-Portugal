@@ -122,11 +122,26 @@ function calcularSalarioLiquido() {
     // Calcular o rendimento mensal
     let rendimentoMensal = periodo === 'anual' ? rendimentoBrutoInput / 14 : rendimentoBrutoInput;
 
-    // Calcular o IRS mensal
-    let irsMensal = calcularIRS(rendimentoMensal);
+    // Calcular o IRS mensal (aplicado sobre 75% do rendimento para regime simplificado)
+    let rendimentoTributavel = tipoTrabalhador === 'independenteSimplificado' ? rendimentoMensal * 0.75 : rendimentoMensal;
+    let irsMensal = calcularIRS(rendimentoTributavel);
 
-    // Segurança Social (11% para trabalhadores por conta de outrem)
-    let segurancaSocialMensal = tipoTrabalhador === 'porContaOutrem' ? rendimentoMensal * 0.11 : 0;
+    // Calcular Segurança Social (21.4% sobre 70% do rendimento bruto para independentes)
+    let segurancaSocialMensal;
+    if (tipoTrabalhador === 'porContaOutrem') {
+        segurancaSocialMensal = rendimentoMensal * 0.11;  // 11% para empregados
+    } else if (tipoTrabalhador === 'independenteSimplificado') {
+        segurancaSocialMensal = rendimentoMensal * 0.70 * 0.214;  // 21.4% sobre 70% do rendimento para independentes simplificados
+        // Garantir que o valor não seja menor que a contribuição mínima (€72.04)
+        const contribuicaoMinima = 480.43 * 0.70 * 0.214;  // Minimo para 2024
+        if (segurancaSocialMensal < contribuicaoMinima) {
+            segurancaSocialMensal = contribuicaoMinima;
+        }
+    } else if (tipoTrabalhador === 'independenteContabilidade') {
+        segurancaSocialMensal = rendimentoMensal * 0.214;  // 21.4% para independentes com contabilidade organizada
+    } else {
+        segurancaSocialMensal = 0;
+    }
 
     // Salário Líquido Mensal
     let salarioLiquidoMensal = rendimentoMensal - irsMensal - segurancaSocialMensal;
@@ -144,6 +159,8 @@ function calcularSalarioLiquido() {
     // Exibir os resultados
     exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, salarioLiquidoAnual, salarioLiquidoLiberalAnual);
 }
+
+
 
 // Função para calcular o salário líquido com a Iniciativa Liberal
 function calcularIniciativaLiberal(rendimentoAnual, segurancaSocialAnual) {
