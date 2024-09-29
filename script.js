@@ -293,6 +293,16 @@ function gerarGrafico(canvasId, salarioBruto, irs, segurancaSocial, titulo, isIn
     });
 }
 
+// Fill dinâmico do slider / input range
+const rangeSlider = document.querySelector('input[type="range"]');
+
+document.getElementById('dependentes').addEventListener('input', function() {
+    const value = (this.value - this.min) / (this.max - this.min) * 100;
+    this.style.setProperty('--range-percent', value + '%');
+    document.getElementById('numDependentes').textContent = this.value;  // Updating the number of dependents in real-time
+});
+
+
 
 // Adicionar evento ao botão de simulação
 document.getElementById('simular').addEventListener('click', calcularSalarioLiquido);

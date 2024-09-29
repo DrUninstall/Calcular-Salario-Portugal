@@ -22,26 +22,83 @@ body *:is(p, span, div, h1, h2, h3, h4, h5, h6) {
 
 h1 {
   color: #db3d2d;
+  font-size: 40px;
+  line-height: 48px;
+  font-weight: bold;
 }
 
 h2 {
   color: #26538e;
+  font-size: 32px;
+  line-height: 40px;
 }
 
 label {
   display: block;
   margin-top: 16px;
+  line-height: 24px;
   font-weight: 400;
+  font-size:16px;
 }
 
-input[type="number"],
-select {
+input[type="number"] {
   width: 100%;
   padding: 8px;
-  margin-top: 4px;
+  border: 1px solid #8e92ae;
+  border-radius: 8px;
   font-family: 'Raleway', sans-serif;
   font-size: 16px;
   font-weight: 400;
+  transition: background-color 0.2s, border-color 0.2s;
+  margin-top: 4px;
+  /* Distance between input and label */
+}
+
+input[type="number"]:hover {
+  background-color: #f5f6fa;
+}
+
+input[type="number"]:active {
+  background-color: #e7e8f0;
+}
+
+input[type="number"]:focus {
+  outline: 2px;
+  border-color: #6ba7ed;
+  background-color: white;
+  border-width: 2px;
+}
+
+select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #8e92ae;
+  border-radius: 8px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  transition: background-color 0.2s, border-color 0.2s;
+  margin-top: 4px;
+  /* Distance between select box and label */
+  background-color: white;
+  /* Default background for select */
+  appearance: none;
+  /* Remove default dropdown styling */
+}
+
+select:hover {
+  background-color: #f5f6fa;
+}
+
+select:active {
+  background-color: #e7e8f0;
+}
+
+select:focus {
+  outline: none;
+  border-color: #6ba7ed;
+  border-width: 2px;
+  background-color: white;
 }
 
 .valor {
@@ -72,9 +129,91 @@ select {
   background-color: #51aaee;
 }
 
+/* Style for the input range slider */
 input[type="range"] {
+  -webkit-appearance: none;
+  /* Remove default styling in Webkit browsers */
   width: 100%;
-  margin-top: 5px;
+  height: 8px;
+  /* Height of the slider track */
+  background-color: #e7e8f0;
+  /* Unfilled track color */
+  border-radius: 4px;
+  /* Rounded corners for the slider track */
+  outline: none;
+  margin-top: 4px;
+  transition: background-color 0.3s ease;
+}
+
+/* Custom track styling */
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 8px;
+  background: linear-gradient(to right, #35518d 0%, #35518d var(--range-percent), #e7e8f0 var(--range-percent), #e7e8f0 100%);
+  border-radius: 4px;
+}
+
+input[type="range"]::-moz-range-track {
+  height: 8px;
+  background-color: #e7e8f0;
+  border-radius: 4px;
+}
+
+input[type="range"]::-ms-track {
+  height: 8px;
+  background-color: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+input[type="range"]::-moz-range-progress {
+  background-color: #35518d;
+  /* Filled portion color */
+}
+
+input[type="range"]::-ms-fill-lower {
+  background-color: #35518d;
+  /* Filled portion color */
+}
+
+/* Thumb (handler) styling */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 24px;
+  /* Updated thumb size */
+  height: 24px;
+  /* Updated thumb size */
+  background-color: #ffffff;
+  /* Color of the thumb */
+  border: 2px solid #6ba7ed;
+  /* Stroke/outline around the thumb */
+  border-radius: 50%;
+  /* Make the thumb circular */
+  cursor: pointer;
+  margin-top: -8px;
+  /* Center the thumb vertically with the track */
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  background-color: #ffffff;
+  border: 2px solid #6ba7ed;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+input[type="range"]::-ms-thumb {
+  width: 24px;
+  height: 24px;
+  background-color: #ffffff;
+  border: 2px solid #6ba7ed;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Dynamic fill for Webkit browsers */
+input[type="range"]:focus::-webkit-slider-runnable-track {
+  background: linear-gradient(to right, #35518d 0%, #35518d var(--range-percent), #e7e8f0 var(--range-percent), #e7e8f0 100%);
 }
 
 #simular {
