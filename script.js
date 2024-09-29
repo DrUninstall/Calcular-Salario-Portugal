@@ -203,43 +203,47 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
     const container = document.createElement('div');
     container.className = 'resultados-container';
 
-    // Seção Anual
+    // Seção Anual com gráficos antes de "Rendimento Tributável"
     const secaoAnual = document.createElement('div');
     secaoAnual.className = 'resultado';
 
     secaoAnual.innerHTML = `
       <div class="resultados-texto">
           <h3>Anual</h3>
+          <div class="graficos">
+              <canvas id="graficoAnual" width="600" height="100"></canvas>
+          </div>
           <p>Rendimento Tributável: <span class="valor">€${formatNumber(rendimentoBrutoAnual)}</span></p>
           <p>Salário Bruto: <span class="valor">€${formatNumber(rendimentoBrutoAnual)}</span></p>
           <p><span class="dot dot-irs"></span>IRS: <span class="valor">€${formatNumber(irsAnual)}</span></p>
           <p><span class="dot dot-segurança-social"></span>Segurança Social: <span class="valor">€${formatNumber(segurancaSocialAnual)}</span></p>
           <p><span class="dot dot-salario-liquido"></span><strong>Salário Líquido: <span class="valor">€${formatNumber(salarioLiquidoAnual)}</span></strong></p>
+          <div class="graficos">
+              <canvas id="graficoAnualLiberal" width="600" height="100"></canvas>
+          </div>
           <p><span class="dot dot-salario-liquido-il"></span><strong>Salário Líquido com a Iniciativa Liberal: <span class="valor">€${formatNumber(salarioLiquidoLiberalAnual)}</span></strong></p>
-      </div>
-      <div class="graficos">
-          <canvas id="graficoAnual" width="256" height="256"></canvas>
-          <canvas id="graficoAnualLiberal" width="256" height="256"></canvas>
       </div>
     `;
 
-    // Seção Mensal
+    // Seção Mensal com gráficos antes de "Rendimento Tributável"
     const secaoMensal = document.createElement('div');
     secaoMensal.className = 'resultado';
 
     secaoMensal.innerHTML = `
       <div class="resultados-texto">
           <h3>Mensal</h3>
+          <div class="graficos">
+              <canvas id="graficoMensal" width="600" height="100"></canvas>
+          </div>
           <p>Rendimento Tributável: <span class="valor">€${formatNumber(rendimentoBrutoMensal)}</span></p>
           <p>Salário Bruto: <span class="valor">€${formatNumber(rendimentoBrutoMensal)}</span></p>
           <p><span class="dot dot-irs"></span>IRS: <span class="valor">€${formatNumber(irsMensal)}</span></p>
           <p><span class="dot dot-segurança-social"></span>Segurança Social: <span class="valor">€${formatNumber(segurancaSocialMensal)}</span></p>
           <p><span class="dot dot-salario-liquido"></span><strong>Salário Líquido: <span class="valor">€${formatNumber(salarioLiquidoMensal)}</span></strong></p>
+          <div class="graficos">
+              <canvas id="graficoMensalLiberal" width="600" height="100"></canvas>
+          </div>
           <p><span class="dot dot-salario-liquido-il"></span><strong>Salário Líquido com a Iniciativa Liberal: <span class="valor">€${formatNumber(salarioLiquidoLiberalMensal)}</span></strong></p>
-      </div>
-      <div class="graficos">
-          <canvas id="graficoMensal" width="256" height="256"></canvas>
-          <canvas id="graficoMensalLiberal" width="256" height="256"></canvas>
       </div>
     `;
 
@@ -258,40 +262,99 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
     gerarGrafico('graficoMensalLiberal', rendimentoBrutoMensal, calcularIRSLiberal(rendimentoBrutoMensal * 14) / 14, segurancaSocialMensal, 'Mensal com Iniciativa Liberal', true);
 }
 
+
+
 // Função para gerar gráficos
 function gerarGrafico(canvasId, salarioBruto, irs, segurancaSocial, titulo, isIniciativaLiberal = false) {
     const ctx = document.getElementById(canvasId).getContext('2d');
     const salarioLiquido = salarioBruto - irs - segurancaSocial;
 
+    // Calculate the total sum of all values (IRS + Segurança Social + Salário Líquido)
+    const totalSum = irs + segurancaSocial + salarioLiquido;
+
     const backgroundColors = isIniciativaLiberal
-        ? ['#db3d2d', '#ff6b6b', '#51aaee'] // Iniciativa Liberal: IRS (vermelho escuro), Segurança Social (vermelho claro), Salário Líquido (azul claro)
-        : ['#db3d2d', '#ff6b6b', '#26538e']; // Gráfico Normal: IRS (vermelho escuro), Segurança Social (vermelho claro), Salário Líquido (azul escuro)
+        ? ['#db3d2d', '#ff6b6b', '#51aaee'] // Iniciativa Liberal: IRS (dark red), Segurança Social (light red), Salário Líquido (light blue)
+        : ['#db3d2d', '#ff6b6b', '#26538e']; // Normal: IRS (dark red), Segurança Social (light red), Salário Líquido (dark blue)
 
     new Chart(ctx, {
-        type: 'pie',
-        data:{
-            labels: ['IRS', 'Segurança Social', 'Salário Líquido'],
-            datasets: [{
-                data: [irs, segurancaSocial, salarioLiquido],
-                backgroundColor: backgroundColors,
-            }]
+        type: 'bar',
+        data: {
+            labels: [''],  // Use an empty label to preserve the stacking behavior
+            datasets: [
+                {
+                    label: 'Salário Líquido',
+                    data: [salarioLiquido],
+                    backgroundColor: backgroundColors[2],
+                    borderRadius: 8,
+                },
+                {
+                    label: 'IRS',
+                    data: [irs],
+                    backgroundColor: backgroundColors[0],
+                    borderRadius: 8,
+                },
+                {
+                    label: 'Segurança Social',
+                    data: [segurancaSocial],
+                    backgroundColor: backgroundColors[1],
+                    borderRadius: 8,
+                }
+            ]
         },
         options: {
-            responsive: false, // Desabilitar responsividade
-            maintainAspectRatio: false,
+            indexAxis: 'y',  // Horizontal bar chart
+            scales: {
+                x: {
+                    stacked: true,  // Stack the bars
+                    max: totalSum,  // Set the far edge to the total sum of the values
+                    ticks: {
+                        callback: function(value) {
+                            return '€' + value.toLocaleString();  // Format x-axis labels as currency
+                        },
+                        display: true,  // Show x-axis ticks (currency values)
+                    },
+                    grid: {
+                        display: false,  // Hide x-axis gridlines (reference lines)
+                        drawBorder: false,  // Remove the x-axis edge border line
+                        drawTicks: false,  // Remove the ticks on the x-axis
+                    },
+                },
+                y: {
+                    stacked: true,  // Stack the bars vertically (in a horizontal layout)
+                    ticks: {
+                        display: false,  // Hide y-axis labels
+                    },
+                    grid: {
+                        display: false,  // Hide y-axis gridlines
+                        drawBorder: false,  // Remove the y-axis edge border line
+                        drawTicks: false,  // Remove the ticks on the y-axis
+                    },
+                }
+            },
             plugins: {
                 legend: {
-                    display: false,
-                    position: 'bottom'
+                    display: false,  // Hide the legend if not needed
                 },
                 title: {
-                    display: true,
-                    text: titulo
+                    display: true,  // Show the title at the top
+                    text: titulo,
+                    position: 'top',  // Keep the title at the top
                 }
-            }
-        },
+            },
+            responsive: true,
+            maintainAspectRatio: false,  // Allow the chart to resize based on container
+            barPercentage: 1,  // Make the bars take up the full width
+            categoryPercentage: 1,  // Ensure no gaps between bars
+        }
     });
 }
+
+
+
+
+
+
+
 
 // Fill dinâmico do slider / input range
 const rangeSlider = document.querySelector('input[type="range"]');
