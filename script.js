@@ -203,7 +203,9 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
     const container = document.createElement('div');
     container.className = 'resultados-container';
 
-    // Seção Anual com gráficos antes de "Rendimento Tributável"
+    const tipoTrabalhador = document.getElementById('tipoTrabalhador').value;
+
+    // Seção Anual
     const secaoAnual = document.createElement('div');
     secaoAnual.className = 'resultado';
 
@@ -213,19 +215,20 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
           <div class="graficos">
               <canvas id="graficoAnual" width="600" height="100"></canvas>
           </div>
-          <p>Rendimento Tributável: <span class="valor">€${formatNumber(rendimentoBrutoAnual)}</span></p>
-          <p>Salário Bruto: <span class="valor">€${formatNumber(rendimentoBrutoAnual)}</span></p>
-          <p><span class="dot dot-irs"></span>IRS: <span class="valor">€${formatNumber(irsAnual)}</span></p>
-          <p><span class="dot dot-segurança-social"></span>Segurança Social: <span class="valor">€${formatNumber(segurancaSocialAnual)}</span></p>
-          <p><span class="dot dot-salario-liquido"></span><strong>Salário Líquido: <span class="valor">€${formatNumber(salarioLiquidoAnual)}</span></strong></p>
+          ${tipoTrabalhador !== 'porContaOutrem' ? 
+          `<p><span class="label">Rendimento Tributável:</span> <span class="valor">€${formatNumber(rendimentoBrutoAnual)}</span></p>` : ''}
+          <p><span class="dot dot-salario-liquido"></span><span class="label">Salário Bruto:</span> <span class="valor">€${formatNumber(rendimentoBrutoAnual)}</span></p>
+          <p><span class="dot dot-irs"></span><span class="label">IRS:</span> <span class="valor">€${formatNumber(irsAnual)}</span></p>
+          <p><span class="dot dot-segurança-social"></span><span class="label">Segurança Social:</span> <span class="valor">€${formatNumber(segurancaSocialAnual)}</span></p>
+          <p><span class="dot dot-salario-liquido"></span><span class="label">Salário Líquido:</span> <span class="valor">€${formatNumber(salarioLiquidoAnual)}</span></p>
           <div class="graficos">
               <canvas id="graficoAnualLiberal" width="600" height="100"></canvas>
           </div>
-          <p><span class="dot dot-salario-liquido-il"></span><strong>Salário Líquido com a Iniciativa Liberal: <span class="valor">€${formatNumber(salarioLiquidoLiberalAnual)}</span></strong></p>
+          <p><span class="dot dot-salario-liquido-il"></span><span class="label">Salário Líquido com a Iniciativa Liberal:</span> <span class="valor">€${formatNumber(salarioLiquidoLiberalAnual)}</span></p>
       </div>
     `;
 
-    // Seção Mensal com gráficos antes de "Rendimento Tributável"
+    // Seção Mensal
     const secaoMensal = document.createElement('div');
     secaoMensal.className = 'resultado';
 
@@ -235,15 +238,16 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
           <div class="graficos">
               <canvas id="graficoMensal" width="600" height="100"></canvas>
           </div>
-          <p>Rendimento Tributável: <span class="valor">€${formatNumber(rendimentoBrutoMensal)}</span></p>
-          <p>Salário Bruto: <span class="valor">€${formatNumber(rendimentoBrutoMensal)}</span></p>
-          <p><span class="dot dot-irs"></span>IRS: <span class="valor">€${formatNumber(irsMensal)}</span></p>
-          <p><span class="dot dot-segurança-social"></span>Segurança Social: <span class="valor">€${formatNumber(segurancaSocialMensal)}</span></p>
-          <p><span class="dot dot-salario-liquido"></span><strong>Salário Líquido: <span class="valor">€${formatNumber(salarioLiquidoMensal)}</span></strong></p>
+          ${tipoTrabalhador !== 'porContaOutrem' ? 
+          `<p><span class="label">Rendimento Tributável:</span> <span class="valor">€${formatNumber(rendimentoBrutoMensal)}</span></p>` : ''}
+          <p><span class="dot dot-salario-liquido"></span><span class="label">Salário Bruto:</span> <span class="valor">€${formatNumber(rendimentoBrutoMensal)}</span></p>
+          <p><span class="dot dot-irs"></span><span class="label">IRS:</span> <span class="valor">€${formatNumber(irsMensal)}</span></p>
+          <p><span class="dot dot-segurança-social"></span><span class="label">Segurança Social:</span> <span class="valor">€${formatNumber(segurancaSocialMensal)}</span></p>
+          <p><span class="dot dot-salario-liquido"></span><span class="label">Salário Líquido:</span> <span class="valor">€${formatNumber(salarioLiquidoMensal)}</span></p>
           <div class="graficos">
               <canvas id="graficoMensalLiberal" width="600" height="100"></canvas>
           </div>
-          <p><span class="dot dot-salario-liquido-il"></span><strong>Salário Líquido com a Iniciativa Liberal: <span class="valor">€${formatNumber(salarioLiquidoLiberalMensal)}</span></strong></p>
+          <p><span class="dot dot-salario-liquido-il"></span><span class="label">Salário Líquido com a Iniciativa Liberal:</span> <span class="valor">€${formatNumber(salarioLiquidoLiberalMensal)}</span></p>
       </div>
     `;
 
@@ -261,6 +265,8 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
     gerarGrafico('graficoMensal', rendimentoBrutoMensal, irsMensal, segurancaSocialMensal, 'Distribuição Mensal');
     gerarGrafico('graficoMensalLiberal', rendimentoBrutoMensal, calcularIRSLiberal(rendimentoBrutoMensal * 14) / 14, segurancaSocialMensal, 'Mensal com Iniciativa Liberal', true);
 }
+
+
 
 
 
@@ -348,12 +354,6 @@ function gerarGrafico(canvasId, salarioBruto, irs, segurancaSocial, titulo, isIn
         }
     });
 }
-
-
-
-
-
-
 
 
 // Fill dinâmico do slider / input range

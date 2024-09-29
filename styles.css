@@ -266,14 +266,28 @@ input[type="range"]:focus::-webkit-slider-runnable-track {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 10px;
+  /* Added gap for consistent spacing */
+}
+
+.resultados-texto p {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .resultados-texto .dot {
-  height: 16px;
-  width: 16px;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 8px;
+  margin-right: 10px;
+}
+
+.resultados-texto .label {
+  flex: 1;
+  text-align: left;
+}
+
+.resultados-texto .valor {
+  text-align: right;
+  font-family: 'Lato', sans-serif;
 }
 
 .dot-salario-liquido {
