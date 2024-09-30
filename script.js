@@ -218,14 +218,14 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
     secaoAnual.innerHTML = `
       <div class="resultados-texto">
           <div class="graficos">
-              <canvas id="graficoAnual" width="600" height="100"></canvas>
+              <canvas id="graficoAnual" width="720" height="90"></canvas>
           </div>
           <p><span class="dot-salario-bruto"></span><span class="label label-indent">Salário Bruto:</span> <span class="valor">€${formatNumber(rendimentoBrutoAnual)}</span></p>
           <p><span class="dot dot-irs"></span><span class="label">IRS (${irsPercent}%):</span> <span class="valor">€${formatNumber(irsAnual)}</span></p>
           <p><span class="dot dot-segurança-social"></span><span class="label">Segurança Social (${segurancaSocialPercent}%):</span> <span class="valor">€${formatNumber(segurancaSocialAnual)}</span></p>
           <p><span class="dot dot-salario-liquido"></span><span class="label">Salário Líquido (${salarioLiquidoPercent}%):</span> <span class="valor">€${formatNumber(salarioLiquidoAnual)}</span></p>
           <div class="graficos">
-              <canvas id="graficoAnualLiberal" width="600" height="100"></canvas>
+              <canvas id="graficoAnualLiberal" width="720" height="90"></canvas>
           </div>
           <p><span class="dot dot-salario-liquido-il"></span><span class="label">Salário Líquido com a Iniciativa Liberal (${salarioLiquidoLiberalPercent}%):</span> 
           <span class="valor" style="background-color: #62ad50; color: #ffffff; font-weight: bold; padding: 4px 8px; border-radius: 4px;">€${formatNumber(salarioLiquidoLiberalAnual)} ${formattedDifferenceAnual}</span></p>
@@ -237,14 +237,14 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
     secaoMensal.innerHTML = `
       <div class="resultados-texto">
           <div class="graficos">
-              <canvas id="graficoMensal" width="600" height="100"></canvas>
+              <canvas id="graficoMensal" width="720" height="90"></canvas>
           </div>
           <p><span class="label label-indent">Salário Bruto:</span> <span class="valor">€${formatNumber(rendimentoBrutoMensal)}</span></p>
           <p><span class="dot dot-irs"></span><span class="label">IRS (${irsPercent}%):</span> <span class="valor">€${formatNumber(irsMensal)}</span></p>
           <p><span class="dot dot-segurança-social"></span><span class="label">Segurança Social (${segurancaSocialPercent}%):</span> <span class="valor">€${formatNumber(segurancaSocialMensal)}</span></p>
           <p><span class="dot dot-salario-liquido"></span><span class="label">Salário Líquido (${salarioLiquidoPercent}%):</span> <span class="valor">€${formatNumber(salarioLiquidoMensal)}</span></p>
           <div class="graficos">
-              <canvas id="graficoMensalLiberal" width="600" height="100"></canvas>
+              <canvas id="graficoMensalLiberal" width="720" height="90"></canvas>
           </div>
           <p><span class="dot dot-salario-liquido-il"></span><span class="label">Salário Líquido com a Iniciativa Liberal (${salarioLiquidoLiberalPercent}%):</span><span class="valor" style="background-color: #62ad50; color: #ffffff; font-weight: bold; padding: 4px 8px; border-radius: 4px;">€${formatNumber(salarioLiquidoLiberalMensal)} ${formattedDifferenceMensal}</span></p>
       </div>
@@ -263,25 +263,34 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
 }
 
 
-
-
-
-
 // Função para gerar gráficos
 function gerarGrafico(canvasId, salarioBruto, irs, segurancaSocial, titulo, isIniciativaLiberal = false) {
-    const ctx = document.getElementById(canvasId).getContext('2d');
+    const canvasElement = document.getElementById(canvasId);
+
+    // Set fixed heights for the canvases
+    if (!isIniciativaLiberal) {
+        canvasElement.style.height = '120px';  // Non-Iniciativa Liberal charts (Distribuição)
+    } else {
+        canvasElement.style.height = '90px';   // Iniciativa Liberal charts
+    }
+
+    const ctx = canvasElement.getContext('2d');
     const salarioLiquido = salarioBruto - irs - segurancaSocial;
 
     const totalSum = irs + segurancaSocial + salarioLiquido;
 
     const backgroundColors = isIniciativaLiberal
-        ? ['#db3d2d', '#ff6b6b', '#51aaee'] // Iniciativa Liberal: IRS (dark red), Segurança Social (light red), Salário Líquido (light blue)
-        : ['#db3d2d', '#ff6b6b', '#26538e']; // Normal: IRS (dark red), Segurança Social (light red), Salário Líquido (dark blue)
+        ? ['#db3d2d', '#ff6b6b', '#51aaee']
+        : ['#db3d2d', '#ff6b6b', '#26538e'];
+
+    const titleStyles = isIniciativaLiberal
+        ? { color: '#51aaee', fontSize: 20, lineHeight: 28 / 20 }
+        : { color: '#26538e', fontSize: 24, lineHeight: 32 / 24 };
 
     new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: [''],  // Use an empty label to preserve the stacking behavior
+            labels: [''],
             datasets: [
                 {
                     label: 'Salário Líquido',
@@ -304,7 +313,7 @@ function gerarGrafico(canvasId, salarioBruto, irs, segurancaSocial, titulo, isIn
             ]
         },
         options: {
-            indexAxis: 'y',  // Horizontal bar chart
+            indexAxis: 'y',
             scales: {
                 x: {
                     stacked: true,
@@ -351,12 +360,12 @@ function gerarGrafico(canvasId, salarioBruto, irs, segurancaSocial, titulo, isIn
                     display: true,
                     text: titulo,
                     position: 'top',
-                    color: '#26538e',  // Match h2 color
+                    color: titleStyles.color,
                     font: {
-                        size: 24,          // Match h2 font size
-                        family: "'Raleway', sans-serif",  // Use the same font
-                        weight: 'bold',    // Make it bold if necessary
-                        lineHeight: 32 / 24,  // Calculate line height based on font size (like h2)
+                        size: titleStyles.fontSize,
+                        family: "'Raleway', sans-serif",
+                        weight: 'bold',
+                        lineHeight: titleStyles.lineHeight,
                     }
                 }
             },
@@ -367,8 +376,6 @@ function gerarGrafico(canvasId, salarioBruto, irs, segurancaSocial, titulo, isIn
         }
     });
 }
-
-
 
 
 // Fill dinâmico do slider / input range
