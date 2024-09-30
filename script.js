@@ -77,6 +77,8 @@ const tabelasIRS = [
     }
 ];
 
+
+
 // Função para calcular o IRS
 function calcularIRS(rendimentoMensal) {
     let irs = 0;
@@ -195,41 +197,30 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
     const segurancaSocialMensal = segurancaSocialAnual / 14;
     const salarioLiquidoMensal = salarioLiquidoAnual / 14;
     const salarioLiquidoLiberalMensal = salarioLiquidoLiberalAnual / 14;
-    // Calculate the difference for annual and monthly values
     const salarioLiquidoDifferenceAnual = salarioLiquidoLiberalAnual - salarioLiquidoAnual;
     const salarioLiquidoDifferenceMensal = salarioLiquidoLiberalMensal - salarioLiquidoMensal;
-    // Format the difference with "+" sign
+
     const formattedDifferenceAnual = `(+€${formatNumber(salarioLiquidoDifferenceAnual)})`;
     const formattedDifferenceMensal = `(+€${formatNumber(salarioLiquidoDifferenceMensal)})`;
 
-    // Calculate percentages
     const irsPercent = (irsAnual / rendimentoBrutoAnual * 100).toFixed(2);
     const segurancaSocialPercent = (segurancaSocialAnual / rendimentoBrutoAnual * 100).toFixed(2);
     const salarioLiquidoPercent = (salarioLiquidoAnual / rendimentoBrutoAnual * 100).toFixed(2);
     const salarioLiquidoLiberalPercent = (salarioLiquidoLiberalAnual / rendimentoBrutoAnual * 100).toFixed(2);
 
-    // Limpar resultados anteriores
-    document.getElementById('resultados').innerHTML = '';
+    document.getElementById('resultados').innerHTML = '';  // Clear previous results
 
-    // Criar containers para Anual e Mensal
     const container = document.createElement('div');
     container.className = 'resultados-container';
 
-    const tipoTrabalhador = document.getElementById('tipoTrabalhador').value;
-
-    // Seção Anual
     const secaoAnual = document.createElement('div');
     secaoAnual.className = 'resultado';
-
     secaoAnual.innerHTML = `
       <div class="resultados-texto">
-          <h3>Anual</h3>
           <div class="graficos">
               <canvas id="graficoAnual" width="600" height="100"></canvas>
           </div>
-          ${tipoTrabalhador !== 'porContaOutrem' ? 
-          `<p><span class="label">Rendimento Tributável:</span> <span class="valor">€${formatNumber(rendimentoBrutoAnual)}</span></p>` : ''}
-          <p><span class="label label-indent">Salário Bruto:</span> <span class="valor">€${formatNumber(rendimentoBrutoAnual)}</span></p>
+          <p><span class="dot-salario-bruto"></span><span class="label label-indent">Salário Bruto:</span> <span class="valor">€${formatNumber(rendimentoBrutoAnual)}</span></p>
           <p><span class="dot dot-irs"></span><span class="label">IRS (${irsPercent}%):</span> <span class="valor">€${formatNumber(irsAnual)}</span></p>
           <p><span class="dot dot-segurança-social"></span><span class="label">Segurança Social (${segurancaSocialPercent}%):</span> <span class="valor">€${formatNumber(segurancaSocialAnual)}</span></p>
           <p><span class="dot dot-salario-liquido"></span><span class="label">Salário Líquido (${salarioLiquidoPercent}%):</span> <span class="valor">€${formatNumber(salarioLiquidoAnual)}</span></p>
@@ -237,23 +228,17 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
               <canvas id="graficoAnualLiberal" width="600" height="100"></canvas>
           </div>
           <p><span class="dot dot-salario-liquido-il"></span><span class="label">Salário Líquido com a Iniciativa Liberal (${salarioLiquidoLiberalPercent}%):</span> 
-          <span class="valor">€${formatNumber(salarioLiquidoLiberalAnual)} ${formattedDifferenceAnual}</span></p>
+          <span class="valor" style="background-color: #62ad50; color: #ffffff; font-weight: bold; padding: 4px 8px; border-radius: 4px;">€${formatNumber(salarioLiquidoLiberalAnual)} ${formattedDifferenceAnual}</span></p>
       </div>
     `;
 
-    // Seção Mensal
     const secaoMensal = document.createElement('div');
-    const salarioLiquidoMensalDifference = salarioLiquidoLiberalAnual - salarioLiquidoAnual;
     secaoMensal.className = 'resultado';
-
     secaoMensal.innerHTML = `
       <div class="resultados-texto">
-          <h3>Mensal</h3>
           <div class="graficos">
               <canvas id="graficoMensal" width="600" height="100"></canvas>
           </div>
-          ${tipoTrabalhador !== 'porContaOutrem' ? 
-          `<p><span class="label">Rendimento Tributável:</span> <span class="valor">€${formatNumber(rendimentoBrutoMensal)}</span></p>` : ''}
           <p><span class="label label-indent">Salário Bruto:</span> <span class="valor">€${formatNumber(rendimentoBrutoMensal)}</span></p>
           <p><span class="dot dot-irs"></span><span class="label">IRS (${irsPercent}%):</span> <span class="valor">€${formatNumber(irsMensal)}</span></p>
           <p><span class="dot dot-segurança-social"></span><span class="label">Segurança Social (${segurancaSocialPercent}%):</span> <span class="valor">€${formatNumber(segurancaSocialMensal)}</span></p>
@@ -261,25 +246,24 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
           <div class="graficos">
               <canvas id="graficoMensalLiberal" width="600" height="100"></canvas>
           </div>
-          <p><span class="dot dot-salario-liquido-il"></span><span class="label">Salário Líquido com a Iniciativa Liberal (${salarioLiquidoLiberalPercent}%):</span> 
-          <span class="valor">€${formatNumber(salarioLiquidoLiberalMensal)} ${formattedDifferenceMensal}</span></p>
+          <p><span class="dot dot-salario-liquido-il"></span><span class="label">Salário Líquido com a Iniciativa Liberal (${salarioLiquidoLiberalPercent}%):</span><span class="valor" style="background-color: #62ad50; color: #ffffff; font-weight: bold; padding: 4px 8px; border-radius: 4px;">€${formatNumber(salarioLiquidoLiberalMensal)} ${formattedDifferenceMensal}</span></p>
       </div>
     `;
 
-    // Adicionar seções ao container
     container.appendChild(secaoAnual);
     container.appendChild(secaoMensal);
 
-    // Adicionar container ao DOM
     document.getElementById('resultados').appendChild(container);
 
-    // Gerar gráficos
+    // Generate the charts
     gerarGrafico('graficoAnual', rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 'Distribuição Anual');
     gerarGrafico('graficoAnualLiberal', rendimentoBrutoAnual, calcularIRSLiberal(rendimentoBrutoAnual), segurancaSocialAnual, 'Anual com Iniciativa Liberal', true);
-
     gerarGrafico('graficoMensal', rendimentoBrutoMensal, irsMensal, segurancaSocialMensal, 'Distribuição Mensal');
     gerarGrafico('graficoMensalLiberal', rendimentoBrutoMensal, calcularIRSLiberal(rendimentoBrutoMensal * 14) / 14, segurancaSocialMensal, 'Mensal com Iniciativa Liberal', true);
 }
+
+
+
 
 
 
@@ -288,7 +272,6 @@ function gerarGrafico(canvasId, salarioBruto, irs, segurancaSocial, titulo, isIn
     const ctx = document.getElementById(canvasId).getContext('2d');
     const salarioLiquido = salarioBruto - irs - segurancaSocial;
 
-    // Calculate the total sum of all values (IRS + Segurança Social + Salário Líquido)
     const totalSum = irs + segurancaSocial + salarioLiquido;
 
     const backgroundColors = isIniciativaLiberal
@@ -324,29 +307,29 @@ function gerarGrafico(canvasId, salarioBruto, irs, segurancaSocial, titulo, isIn
             indexAxis: 'y',  // Horizontal bar chart
             scales: {
                 x: {
-                    stacked: true,  // Stack the bars
-                    max: totalSum,  // Set the far edge to the total sum of the values
+                    stacked: true,
+                    max: totalSum,
                     ticks: {
                         callback: function(value) {
-                            return '€' + value.toLocaleString();  // Format x-axis labels as currency
+                            return '€' + value.toLocaleString();
                         },
-                        display: true,  // Show x-axis ticks (currency values)
+                        display: true,
                     },
                     grid: {
-                        display: false,  // Hide x-axis gridlines (reference lines)
-                        drawBorder: false,  // Remove the x-axis edge border line
-                        drawTicks: false,  // Remove the ticks on the x-axis
+                        display: false,
+                        drawBorder: false,
+                        drawTicks: false,
                     },
                 },
                 y: {
-                    stacked: true,  // Stack the bars vertically (in a horizontal layout)
+                    stacked: true,
                     ticks: {
-                        display: false,  // Hide y-axis labels
+                        display: false,
                     },
                     grid: {
-                        display: false,  // Hide y-axis gridlines
-                        drawBorder: false,  // Remove the y-axis edge border line
-                        drawTicks: false,  // Remove the ticks on the y-axis
+                        display: false,
+                        drawBorder: false,
+                        drawTicks: false,
                     },
                 }
             },
@@ -355,28 +338,36 @@ function gerarGrafico(canvasId, salarioBruto, irs, segurancaSocial, titulo, isIn
                     callbacks: {
                         label: function(tooltipItem) {
                             const value = tooltipItem.raw;
-                            const percentage = ((value / totalSum) * 100).toFixed(2);  // Calculate percentage
+                            const percentage = ((value / totalSum) * 100).toFixed(2);
                             const label = tooltipItem.dataset.label;
-                            return `${label}: €${value.toLocaleString()} (${percentage}%)`;  // Display value with percentage
+                            return `${label}: €${value.toLocaleString()} (${percentage}%)`;
                         }
                     }
                 },
                 legend: {
-                    display: false,  // Hide the legend if not needed
+                    display: false,
                 },
                 title: {
-                    display: true,  // Show the title at the top
+                    display: true,
                     text: titulo,
-                    position: 'top',  // Keep the title at the top
+                    position: 'top',
+                    color: '#26538e',  // Match h2 color
+                    font: {
+                        size: 24,          // Match h2 font size
+                        family: "'Raleway', sans-serif",  // Use the same font
+                        weight: 'bold',    // Make it bold if necessary
+                        lineHeight: 32 / 24,  // Calculate line height based on font size (like h2)
+                    }
                 }
             },
             responsive: true,
-            maintainAspectRatio: false,  // Allow the chart to resize based on container
-            barPercentage: 1,  // Make the bars take up the full width
-            categoryPercentage: 1,  // Ensure no gaps between bars
+            maintainAspectRatio: false,
+            barPercentage: 1,
+            categoryPercentage: 1,
         }
     });
 }
+
 
 
 
