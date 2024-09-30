@@ -218,7 +218,7 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
     secaoAnual.className = 'resultado';
     secaoAnual.innerHTML = `
     <div class="resultados-texto">
-        <h3>Distribuição Anual</h3>
+        <h2>Distribuição Anual</h2>
         <div class="graficos">
             <canvas id="graficoAnual" width="720" height="60"></canvas>
         </div>
@@ -227,7 +227,7 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
         <p><span class="dot dot-segurança-social"></span><span class="label">Segurança Social (${segurancaSocialPercent}%):</span> <span class="valor">€${formatNumber(segurancaSocialAnual)}</span></p>
         <p><span class="dot dot-salario-liquido"></span><span class="label">Salário Líquido (${salarioLiquidoPercent}%):</span> <span class="valor">€${formatNumber(salarioLiquidoAnual)}</span></p>
         <!-- Salário Líquido - Iniciativa Liberal Section -->
-        <div><h4>Distribuição Anual - IL<h3></div>
+        <div><h4>Distribuição Anual - IL<h4></div>
         <div class="graficos">
             <canvas id="graficoAnualLiberal" width="720" height="48"></canvas>
         </div>
@@ -241,7 +241,7 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
     secaoMensal.className = 'resultado';
     secaoMensal.innerHTML = `
     <div class="resultados-texto">
-        <h3>Distribuição Mensal</h3>
+        <h2>Distribuição Mensal</h2>
         <div class="graficos">
             <canvas id="graficoMensal" width="720" height="60"></canvas>
         </div>
