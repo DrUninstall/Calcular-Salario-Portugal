@@ -195,6 +195,12 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
     const segurancaSocialMensal = segurancaSocialAnual / 14;
     const salarioLiquidoMensal = salarioLiquidoAnual / 14;
     const salarioLiquidoLiberalMensal = salarioLiquidoLiberalAnual / 14;
+    // Calculate the difference for annual and monthly values
+    const salarioLiquidoDifferenceAnual = salarioLiquidoLiberalAnual - salarioLiquidoAnual;
+    const salarioLiquidoDifferenceMensal = salarioLiquidoLiberalMensal - salarioLiquidoMensal;
+    // Format the difference with "+" sign
+    const formattedDifferenceAnual = `(+€${formatNumber(salarioLiquidoDifferenceAnual)})`;
+    const formattedDifferenceMensal = `(+€${formatNumber(salarioLiquidoDifferenceMensal)})`;
 
     // Calculate percentages
     const irsPercent = (irsAnual / rendimentoBrutoAnual * 100).toFixed(2);
@@ -230,12 +236,14 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
           <div class="graficos">
               <canvas id="graficoAnualLiberal" width="600" height="100"></canvas>
           </div>
-          <p><span class="dot dot-salario-liquido-il"></span><span class="label">Salário Líquido com a Iniciativa Liberal (${salarioLiquidoLiberalPercent}%):</span> <span class="valor">€${formatNumber(salarioLiquidoLiberalAnual)}</span></p>
+          <p><span class="dot dot-salario-liquido-il"></span><span class="label">Salário Líquido com a Iniciativa Liberal (${salarioLiquidoLiberalPercent}%):</span> 
+          <span class="valor">€${formatNumber(salarioLiquidoLiberalAnual)} ${formattedDifferenceAnual}</span></p>
       </div>
     `;
 
     // Seção Mensal
     const secaoMensal = document.createElement('div');
+    const salarioLiquidoMensalDifference = salarioLiquidoLiberalAnual - salarioLiquidoAnual;
     secaoMensal.className = 'resultado';
 
     secaoMensal.innerHTML = `
@@ -253,7 +261,8 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
           <div class="graficos">
               <canvas id="graficoMensalLiberal" width="600" height="100"></canvas>
           </div>
-          <p><span class="dot dot-salario-liquido-il"></span><span class="label">Salário Líquido com a Iniciativa Liberal (${salarioLiquidoLiberalPercent}%):</span> <span class="valor">€${formatNumber(salarioLiquidoLiberalMensal)}</span></p>
+          <p><span class="dot dot-salario-liquido-il"></span><span class="label">Salário Líquido com a Iniciativa Liberal (${salarioLiquidoLiberalPercent}%):</span> 
+          <span class="valor">€${formatNumber(salarioLiquidoLiberalMensal)} ${formattedDifferenceMensal}</span></p>
       </div>
     `;
 
