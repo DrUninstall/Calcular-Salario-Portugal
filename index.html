@@ -37,15 +37,17 @@
 
     <!-- 2. Rendimentos -->
     <h2>2. Rendimento Bruto (€)</h2>
-    <div class="segmented-button">
-      <!-- 2.1.2. Mensal - Anual -->
-      <input type="radio" id="mensal" name="periodo" value="mensal" checked>
-      <label for="mensal">Mensal</label>
-      <input type="radio" id="anual" name="periodo" value="anual">
-      <label for="anual">Anual</label>
+    <div class="input-segmented-container">
+      <!-- 2.1.3. Input do Rendimento Bruto -->
+      <input type="number" id="rendimentoBruto" placeholder="Insira o valor em €">
+      <div class="segmented-button">
+        <!-- 2.1.2. Mensal - Anual -->
+        <input type="radio" id="mensal" name="periodo" value="mensal" checked>
+        <label for="mensal">Mensal</label>
+        <input type="radio" id="anual" name="periodo" value="anual">
+        <label for="anual">Anual</label>
+      </div>
     </div>
-    <!-- 2.1.3. Input do Rendimento Bruto -->
-    <input type="number" id="rendimentoBruto" placeholder="Insira o valor em €">
 
     <!-- 3. Tipo de Trabalhador -->
     <h2>3. Tipo de Trabalhador</h2>
