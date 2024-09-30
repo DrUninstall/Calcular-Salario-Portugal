@@ -196,6 +196,12 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
     const salarioLiquidoMensal = salarioLiquidoAnual / 14;
     const salarioLiquidoLiberalMensal = salarioLiquidoLiberalAnual / 14;
 
+    // Calculate percentages
+    const irsPercent = (irsAnual / rendimentoBrutoAnual * 100).toFixed(2);
+    const segurancaSocialPercent = (segurancaSocialAnual / rendimentoBrutoAnual * 100).toFixed(2);
+    const salarioLiquidoPercent = (salarioLiquidoAnual / rendimentoBrutoAnual * 100).toFixed(2);
+    const salarioLiquidoLiberalPercent = (salarioLiquidoLiberalAnual / rendimentoBrutoAnual * 100).toFixed(2);
+
     // Limpar resultados anteriores
     document.getElementById('resultados').innerHTML = '';
 
@@ -217,14 +223,14 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
           </div>
           ${tipoTrabalhador !== 'porContaOutrem' ? 
           `<p><span class="label">Rendimento Tributável:</span> <span class="valor">€${formatNumber(rendimentoBrutoAnual)}</span></p>` : ''}
-          <p><span class="dot dot-salario-liquido"></span><span class="label">Salário Bruto:</span> <span class="valor">€${formatNumber(rendimentoBrutoAnual)}</span></p>
-          <p><span class="dot dot-irs"></span><span class="label">IRS:</span> <span class="valor">€${formatNumber(irsAnual)}</span></p>
-          <p><span class="dot dot-segurança-social"></span><span class="label">Segurança Social:</span> <span class="valor">€${formatNumber(segurancaSocialAnual)}</span></p>
-          <p><span class="dot dot-salario-liquido"></span><span class="label">Salário Líquido:</span> <span class="valor">€${formatNumber(salarioLiquidoAnual)}</span></p>
+          <p><span class="label label-indent">Salário Bruto:</span> <span class="valor">€${formatNumber(rendimentoBrutoAnual)}</span></p>
+          <p><span class="dot dot-irs"></span><span class="label">IRS (${irsPercent}%):</span> <span class="valor">€${formatNumber(irsAnual)}</span></p>
+          <p><span class="dot dot-segurança-social"></span><span class="label">Segurança Social (${segurancaSocialPercent}%):</span> <span class="valor">€${formatNumber(segurancaSocialAnual)}</span></p>
+          <p><span class="dot dot-salario-liquido"></span><span class="label">Salário Líquido (${salarioLiquidoPercent}%):</span> <span class="valor">€${formatNumber(salarioLiquidoAnual)}</span></p>
           <div class="graficos">
               <canvas id="graficoAnualLiberal" width="600" height="100"></canvas>
           </div>
-          <p><span class="dot dot-salario-liquido-il"></span><span class="label">Salário Líquido com a Iniciativa Liberal:</span> <span class="valor">€${formatNumber(salarioLiquidoLiberalAnual)}</span></p>
+          <p><span class="dot dot-salario-liquido-il"></span><span class="label">Salário Líquido com a Iniciativa Liberal (${salarioLiquidoLiberalPercent}%):</span> <span class="valor">€${formatNumber(salarioLiquidoLiberalAnual)}</span></p>
       </div>
     `;
 
@@ -240,14 +246,14 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
           </div>
           ${tipoTrabalhador !== 'porContaOutrem' ? 
           `<p><span class="label">Rendimento Tributável:</span> <span class="valor">€${formatNumber(rendimentoBrutoMensal)}</span></p>` : ''}
-          <p><span class="dot dot-salario-liquido"></span><span class="label">Salário Bruto:</span> <span class="valor">€${formatNumber(rendimentoBrutoMensal)}</span></p>
-          <p><span class="dot dot-irs"></span><span class="label">IRS:</span> <span class="valor">€${formatNumber(irsMensal)}</span></p>
-          <p><span class="dot dot-segurança-social"></span><span class="label">Segurança Social:</span> <span class="valor">€${formatNumber(segurancaSocialMensal)}</span></p>
-          <p><span class="dot dot-salario-liquido"></span><span class="label">Salário Líquido:</span> <span class="valor">€${formatNumber(salarioLiquidoMensal)}</span></p>
+          <p><span class="label label-indent">Salário Bruto:</span> <span class="valor">€${formatNumber(rendimentoBrutoMensal)}</span></p>
+          <p><span class="dot dot-irs"></span><span class="label">IRS (${irsPercent}%):</span> <span class="valor">€${formatNumber(irsMensal)}</span></p>
+          <p><span class="dot dot-segurança-social"></span><span class="label">Segurança Social (${segurancaSocialPercent}%):</span> <span class="valor">€${formatNumber(segurancaSocialMensal)}</span></p>
+          <p><span class="dot dot-salario-liquido"></span><span class="label">Salário Líquido (${salarioLiquidoPercent}%):</span> <span class="valor">€${formatNumber(salarioLiquidoMensal)}</span></p>
           <div class="graficos">
               <canvas id="graficoMensalLiberal" width="600" height="100"></canvas>
           </div>
-          <p><span class="dot dot-salario-liquido-il"></span><span class="label">Salário Líquido com a Iniciativa Liberal:</span> <span class="valor">€${formatNumber(salarioLiquidoLiberalMensal)}</span></p>
+          <p><span class="dot dot-salario-liquido-il"></span><span class="label">Salário Líquido com a Iniciativa Liberal (${salarioLiquidoLiberalPercent}%):</span> <span class="valor">€${formatNumber(salarioLiquidoLiberalMensal)}</span></p>
       </div>
     `;
 
@@ -265,8 +271,6 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
     gerarGrafico('graficoMensal', rendimentoBrutoMensal, irsMensal, segurancaSocialMensal, 'Distribuição Mensal');
     gerarGrafico('graficoMensalLiberal', rendimentoBrutoMensal, calcularIRSLiberal(rendimentoBrutoMensal * 14) / 14, segurancaSocialMensal, 'Mensal com Iniciativa Liberal', true);
 }
-
-
 
 
 
@@ -338,6 +342,16 @@ function gerarGrafico(canvasId, salarioBruto, irs, segurancaSocial, titulo, isIn
                 }
             },
             plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            const value = tooltipItem.raw;
+                            const percentage = ((value / totalSum) * 100).toFixed(2);  // Calculate percentage
+                            const label = tooltipItem.dataset.label;
+                            return `${label}: €${value.toLocaleString()} (${percentage}%)`;  // Display value with percentage
+                        }
+                    }
+                },
                 legend: {
                     display: false,  // Hide the legend if not needed
                 },
@@ -354,6 +368,7 @@ function gerarGrafico(canvasId, salarioBruto, irs, segurancaSocial, titulo, isIn
         }
     });
 }
+
 
 
 // Fill dinâmico do slider / input range
