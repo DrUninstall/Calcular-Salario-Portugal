@@ -197,57 +197,66 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
     const segurancaSocialMensal = segurancaSocialAnual / 14;
     const salarioLiquidoMensal = salarioLiquidoAnual / 14;
     const salarioLiquidoLiberalMensal = salarioLiquidoLiberalAnual / 14;
-    const salarioLiquidoDifferenceAnual = salarioLiquidoLiberalAnual - salarioLiquidoAnual;
-    const salarioLiquidoDifferenceMensal = salarioLiquidoLiberalMensal - salarioLiquidoMensal;
 
-    const formattedDifferenceAnual = `(+€${formatNumber(salarioLiquidoDifferenceAnual)})`;
-    const formattedDifferenceMensal = `(+€${formatNumber(salarioLiquidoDifferenceMensal)})`;
+    // Calculate the differences (extras)
+    const extraAnual = salarioLiquidoLiberalAnual - salarioLiquidoAnual;
+    const extraMensal = salarioLiquidoLiberalMensal - salarioLiquidoMensal;
 
+    // Calculate the percentages
     const irsPercent = (irsAnual / rendimentoBrutoAnual * 100).toFixed(2);
     const segurancaSocialPercent = (segurancaSocialAnual / rendimentoBrutoAnual * 100).toFixed(2);
     const salarioLiquidoPercent = (salarioLiquidoAnual / rendimentoBrutoAnual * 100).toFixed(2);
-    const salarioLiquidoLiberalPercent = (salarioLiquidoLiberalAnual / rendimentoBrutoAnual * 100).toFixed(2);
+    const salarioLiquidoLiberalPercent = (salarioLiquidoLiberalAnual / rendimentoBrutoAnual * 100).toFixed(2); // Added percentage for Iniciativa Liberal
 
     document.getElementById('resultados').innerHTML = '';  // Clear previous results
 
     const container = document.createElement('div');
     container.className = 'resultados-container';
 
+    // Annual Section
     const secaoAnual = document.createElement('div');
     secaoAnual.className = 'resultado';
     secaoAnual.innerHTML = `
-      <div class="resultados-texto">
-          <div class="graficos">
-              <canvas id="graficoAnual" width="720" height="90"></canvas>
-          </div>
-          <p><span class="dot-salario-bruto"></span><span class="label label-indent">Salário Bruto:</span> <span class="valor">€${formatNumber(rendimentoBrutoAnual)}</span></p>
-          <p><span class="dot dot-irs"></span><span class="label">IRS (${irsPercent}%):</span> <span class="valor">€${formatNumber(irsAnual)}</span></p>
-          <p><span class="dot dot-segurança-social"></span><span class="label">Segurança Social (${segurancaSocialPercent}%):</span> <span class="valor">€${formatNumber(segurancaSocialAnual)}</span></p>
-          <p><span class="dot dot-salario-liquido"></span><span class="label">Salário Líquido (${salarioLiquidoPercent}%):</span> <span class="valor">€${formatNumber(salarioLiquidoAnual)}</span></p>
-          <div class="graficos">
-              <canvas id="graficoAnualLiberal" width="720" height="90"></canvas>
-          </div>
-          <p><span class="dot dot-salario-liquido-il"></span><span class="label">Salário Líquido com a Iniciativa Liberal (${salarioLiquidoLiberalPercent}%):</span> 
-          <span class="valor" style="background-color: #62ad50; color: #ffffff; font-weight: bold; padding: 4px 8px; border-radius: 4px;">€${formatNumber(salarioLiquidoLiberalAnual)} ${formattedDifferenceAnual}</span></p>
-      </div>
+    <div class="resultados-texto">
+        <h3>Distribuição Anual</h3>
+        <div class="graficos">
+            <canvas id="graficoAnual" width="720" height="60"></canvas>
+        </div>
+        <p><span class="dot dot-salario-bruto"></span><span class="label">Salário Bruto:</span> <span class="valor">€${formatNumber(rendimentoBrutoAnual)}</span></p> <!-- Added Salário Bruto with grey dot -->
+        <p><span class="dot dot-irs"></span><span class="label">IRS (${irsPercent}%):</span> <span class="valor">€${formatNumber(irsAnual)}</span></p>
+        <p><span class="dot dot-segurança-social"></span><span class="label">Segurança Social (${segurancaSocialPercent}%):</span> <span class="valor">€${formatNumber(segurancaSocialAnual)}</span></p>
+        <p><span class="dot dot-salario-liquido"></span><span class="label">Salário Líquido (${salarioLiquidoPercent}%):</span> <span class="valor">€${formatNumber(salarioLiquidoAnual)}</span></p>
+        <!-- Salário Líquido - Iniciativa Liberal Section -->
+        <div><h4>Distribuição Anual - IL<h3></div>
+        <div class="graficos">
+            <canvas id="graficoAnualLiberal" width="720" height="48"></canvas>
+        </div>
+        <p><span class="dot dot-salario-liquido-il"></span><span class="label">Salário Líquido - Iniciativa Liberal (${salarioLiquidoLiberalPercent}%):</span> 
+        <span class="valor" style="background-color: #62ad50; color: #ffffff; font-weight: bold; padding: 4px 8px; border-radius: 4px;">€${formatNumber(salarioLiquidoLiberalAnual)} (+€${formatNumber(extraAnual)})</span></p>
+    </div>
     `;
 
+    // Monthly Section
     const secaoMensal = document.createElement('div');
     secaoMensal.className = 'resultado';
     secaoMensal.innerHTML = `
-      <div class="resultados-texto">
-          <div class="graficos">
-              <canvas id="graficoMensal" width="720" height="90"></canvas>
-          </div>
-          <p><span class="label label-indent">Salário Bruto:</span> <span class="valor">€${formatNumber(rendimentoBrutoMensal)}</span></p>
-          <p><span class="dot dot-irs"></span><span class="label">IRS (${irsPercent}%):</span> <span class="valor">€${formatNumber(irsMensal)}</span></p>
-          <p><span class="dot dot-segurança-social"></span><span class="label">Segurança Social (${segurancaSocialPercent}%):</span> <span class="valor">€${formatNumber(segurancaSocialMensal)}</span></p>
-          <p><span class="dot dot-salario-liquido"></span><span class="label">Salário Líquido (${salarioLiquidoPercent}%):</span> <span class="valor">€${formatNumber(salarioLiquidoMensal)}</span></p>
-          <div class="graficos">
-              <canvas id="graficoMensalLiberal" width="720" height="90"></canvas>
-          </div>
-          <p><span class="dot dot-salario-liquido-il"></span><span class="label">Salário Líquido com a Iniciativa Liberal (${salarioLiquidoLiberalPercent}%):</span><span class="valor" style="background-color: #62ad50; color: #ffffff; font-weight: bold; padding: 4px 8px; border-radius: 4px;">€${formatNumber(salarioLiquidoLiberalMensal)} ${formattedDifferenceMensal}</span></p>
-      </div>
+    <div class="resultados-texto">
+        <h3>Distribuição Mensal</h3>
+        <div class="graficos">
+            <canvas id="graficoMensal" width="720" height="60"></canvas>
+        </div>
+        <p><span class="dot dot-salario-bruto"></span><span class="label">Salário Bruto:</span> <span class="valor">€${formatNumber(rendimentoBrutoMensal)}</span></p> <!-- Added Salário Bruto with grey dot -->
+        <p><span class="dot dot-irs"></span><span class="label">IRS (${irsPercent}%):</span> <span class="valor">€${formatNumber(irsMensal)}</span></p>
+        <p><span class="dot dot-segurança-social"></span><span class="label">Segurança Social (${segurancaSocialPercent}%):</span> <span class="valor">€${formatNumber(segurancaSocialMensal)}</span></p>
+        <p><span class="dot dot-salario-liquido"></span><span class="label">Salário Líquido (${salarioLiquidoPercent}%):</span> <span class="valor">€${formatNumber(salarioLiquidoMensal)}</span></p>
+        <!-- Salário Líquido - Iniciativa Liberal Section -->
+        <div><h4>Distribuição Mensal - IL<h4></div>
+        <div class="graficos">
+            <canvas id="graficoMensalLiberal" width="720" height="48"></canvas>
+        </div>
+        <p><span class="dot dot-salario-liquido-il"></span><span class="label">Salário Líquido - Iniciativa Liberal (${salarioLiquidoLiberalPercent}%):</span> 
+        <span class="valor" style="background-color: #62ad50; color: #ffffff; font-weight: bold; padding: 4px 8px; border-radius: 4px;">€${formatNumber(salarioLiquidoLiberalMensal)} (+€${formatNumber(extraMensal)})</span></p>
+    </div>
     `;
 
     container.appendChild(secaoAnual);
@@ -255,12 +264,15 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
 
     document.getElementById('resultados').appendChild(container);
 
-    // Generate the charts
-    gerarGrafico('graficoAnual', rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 'Distribuição Anual');
-    gerarGrafico('graficoAnualLiberal', rendimentoBrutoAnual, calcularIRSLiberal(rendimentoBrutoAnual), segurancaSocialAnual, 'Anual com Iniciativa Liberal', true);
-    gerarGrafico('graficoMensal', rendimentoBrutoMensal, irsMensal, segurancaSocialMensal, 'Distribuição Mensal');
-    gerarGrafico('graficoMensalLiberal', rendimentoBrutoMensal, calcularIRSLiberal(rendimentoBrutoMensal * 14) / 14, segurancaSocialMensal, 'Mensal com Iniciativa Liberal', true);
+    // Generate the charts without titles
+    gerarGrafico('graficoAnual', rendimentoBrutoAnual, irsAnual, segurancaSocialAnual);
+    gerarGrafico('graficoAnualLiberal', rendimentoBrutoAnual, calcularIRSLiberal(rendimentoBrutoAnual), segurancaSocialAnual);
+    gerarGrafico('graficoMensal', rendimentoBrutoMensal, irsMensal, segurancaSocialMensal);
+    gerarGrafico('graficoMensalLiberal', rendimentoBrutoMensal, calcularIRSLiberal(rendimentoBrutoMensal * 14) / 14, segurancaSocialMensal);
 }
+
+
+
 
 
 // Função para gerar gráficos
@@ -269,9 +281,9 @@ function gerarGrafico(canvasId, salarioBruto, irs, segurancaSocial, titulo, isIn
 
     // Set fixed heights for the canvases
     if (!isIniciativaLiberal) {
-        canvasElement.style.height = '120px';  // Non-Iniciativa Liberal charts (Distribuição)
+        canvasElement.style.height = '60px';  // Non-Iniciativa Liberal charts (Distribuição)
     } else {
-        canvasElement.style.height = '90px';   // Iniciativa Liberal charts
+        canvasElement.style.height = '48px';   // Iniciativa Liberal charts
     }
 
     const ctx = canvasElement.getContext('2d');
@@ -283,9 +295,10 @@ function gerarGrafico(canvasId, salarioBruto, irs, segurancaSocial, titulo, isIn
         ? ['#db3d2d', '#ff6b6b', '#51aaee']
         : ['#db3d2d', '#ff6b6b', '#26538e'];
 
+    // Fixed font sizes for chart titles (in pixels)
     const titleStyles = isIniciativaLiberal
-        ? { color: '#51aaee', fontSize: 20, lineHeight: 28 / 20 }
-        : { color: '#26538e', fontSize: 24, lineHeight: 32 / 24 };
+        ? { color: '#51aaee', fontSize: 20 }  // Fixed font size for Iniciativa Liberal charts
+        : { color: '#26538e', fontSize: 24 };  // Fixed font size for regular charts
 
     new Chart(ctx, {
         type: 'bar',
@@ -357,15 +370,15 @@ function gerarGrafico(canvasId, salarioBruto, irs, segurancaSocial, titulo, isIn
                     display: false,
                 },
                 title: {
-                    display: true,
+                    display: false,
                     text: titulo,
                     position: 'top',
                     color: titleStyles.color,
                     font: {
-                        size: titleStyles.fontSize,
+                        size: titleStyles.fontSize,  // Fixed font size for titles
                         family: "'Raleway', sans-serif",
                         weight: 'bold',
-                        lineHeight: titleStyles.lineHeight,
+                        lineHeight: 1.2,  // Line height multiplier instead of responsive scaling
                     }
                 }
             },
@@ -376,6 +389,7 @@ function gerarGrafico(canvasId, salarioBruto, irs, segurancaSocial, titulo, isIn
         }
     });
 }
+
 
 
 // Fill dinâmico do slider / input range

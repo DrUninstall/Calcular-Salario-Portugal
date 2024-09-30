@@ -1,10 +1,11 @@
 .simulador-container {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 24;
+  max-width: 100%;
   background-color: #fcfcfc;
   border-radius: 8px;
-  box-shadow: 4px 16px 32px rgba (0, 0, 0, 0.1);
+  box-shadow: 4px 16px 32px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  margin: 120px auto;
+  box-sizing: border-box; /* Ensure padding doesn't affect total width */
 }
 
 body {
@@ -12,7 +13,6 @@ body {
   color: #363636;
   font-family: 'Raleway', sans-serif;
   font-size: 16px;
-  margin: 24px;
 }
 
 /* Fazer com que números usem a fonte Lato e não Raleway */
@@ -28,15 +28,21 @@ h1 {
 }
 
 h2 {
-  color: #26538e;
-  font-size: 24px;
-  line-height: 32px;
+  color: #26538e!important;
+  font-size: 24px!important;
+  line-height: 32px!important;
 }
 
 h3 {
-  color: #51aaee;
-  font-size: 20px;
-  line-height: 28px;
+  color: #26538e !important;
+  font-size: 20px !important;
+  line-height: 28px !important;
+}
+
+h4 {
+  color: #6ba7ed; !important;
+  font-size: 20px !important;
+  line-height: 28px !important;
 }
 
 label {
@@ -131,6 +137,7 @@ select option[disabled] {
   align-items: center;
   gap: 16px;
   margin-bottom: 24px;
+  height: 48px;
 }
 
 .input-segmented-container input[type="number"] {
@@ -197,7 +204,6 @@ select option[disabled] {
 .segmented-button input[type="radio"]:checked+label {
   background-color: #51aaee;
   color: white;
-  /* Adjust for better contrast */
 }
 
 .segmented-button label:not(.active):hover {
@@ -333,6 +339,7 @@ input[type="range"]:focus::-webkit-slider-runnable-track {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 100%;
   padding: 32px;
   box-sizing: border-box;
 }
@@ -355,14 +362,22 @@ input[type="range"]:focus::-webkit-slider-runnable-track {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 10px;
-  /* Added gap for consistent spacing */
+  align-items: center;
+  width: 100%;
 }
 
 .resultados-texto p {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+  margin: 0;
+  padding: 24px 0;
+  border-bottom: 1px solid #8e92ae;
+}
+
+.resultados-texto p:last-child {
+  border-bottom: none;
 }
 
 .resultados-texto .label {
@@ -381,6 +396,11 @@ input[type="range"]:focus::-webkit-slider-runnable-track {
   height: 24px;
   border-radius: 50%;
   margin-right: 16px;
+}
+
+.dot-salario-bruto {
+  background-color: #ffffff;
+  border: 1px solid #000000;
 }
 
 .dot-salario-liquido {
@@ -406,12 +426,14 @@ input[type="range"]:focus::-webkit-slider-runnable-track {
   width: 100%;
 }
 
+
+
 #graficoAnual, #graficoMensal {
-  height: 120px !important;
+  height: 60px !important;
 }
 
 #graficoAnualLiberal, #graficoMensalLiberal {
-  height: 90px !important;
+  height: 48px !important;
 }
 
 canvas {
@@ -421,50 +443,61 @@ canvas {
   /* Adjust height to fit the bars */
 }
 
-@media screen and (max-width: 1280px) {
+
+
+
+
+/* Desktop and Tablet Screens */
+@media screen and (min-width: 1024px) {
   .simulador-container {
-    max-width: 100%;
-    padding: 120px;
+    max-width: 720px; /* Ensure there's 120px margin on each side */
   }
 }
 
-@media screen and (min-width: 768px) {
+
+
+
+/* Small Tablets and Mobile Screens */
+@media screen and (max-width: 1024px) {
+  .simulador-container {
+    padding: 16px;
+    /* Adjusted for small screens */
+    margin: 0 16px;
+    /* Provide some margin on small screens to prevent overflow */
+    width: 100%;
+  }
+
+  .input-segmented-container,
   #simular {
-    width: auto;
-    min-width: 364px;
-    margin: 24px auto;
-    display: block;
+    flex-direction: column;
+    width: 100%;
   }
-}
 
-@media screen and (max-width: 720px) {
+  input[type="number"],
+  .segmented-button,
+  select,
+  button {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+
+  #resultados {
+    overflow-x: auto;
+  }
+
   .resultado {
     flex: 1 1 100%;
     margin: 10px 0;
   }
-
-  .simulador-container {
-    max-width: 100%;
-    padding: 16px;
-  }
 }
 
+/* Very Small Screens */
 @media screen and (max-width: 480px) {
   .simulador-container {
-    padding: 24px 32px;
-}
-
-@media screen and (max-width: 480px) {
-  #resultados {
-    overflow-x: auto;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  input, select, button {
-    width:100%;
-    font-size:
-    margin-bottom: 24px;
+    padding: 8px;
+    /* Minimal padding for very small screens */
+    margin: 0 8px;
+    /* Ensure there's still a bit of margin on the sides */
   }
 }
 
