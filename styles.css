@@ -483,6 +483,16 @@ canvas {
 
   #resultados {
     overflow-x: auto;
+    border: none;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  .resultados-container {
+    width: auto;
+    padding: 0;
+    margin: 0;
   }
 
   .resultado {
