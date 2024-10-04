@@ -317,8 +317,9 @@ input[type="range"]:focus::-webkit-slider-runnable-track {
 #resultados {
   margin-top: 20px;
   padding: 10px;
-  border: 1px solid #26538e;
+  border: 2px solid #6ba7ed;
   border-radius: 8px;
+  box-shadow: 4px 16px 32px rgba(0, 0, 0, 0.1);
 }
 
 #resultados h3 {
