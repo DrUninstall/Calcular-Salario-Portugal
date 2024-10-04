@@ -144,9 +144,11 @@ function calcularIRS(rendimentoMensal) {
     return irs;
 }
 
+// Minimum wage Portugal 2025
+const SALARIO_MINIMO_NACIONAL = 870 * 14;
+
 // Função para calcular o salário líquido
 function calcularSalarioLiquido() {
-    // Obter os valores dos inputs
     const localizacao = document.getElementById('localizacao').value;
     const estadoCivil = document.getElementById('estadoCivil').value;
     const dependentes = parseInt(document.getElementById('dependentes').value);
@@ -159,46 +161,46 @@ function calcularSalarioLiquido() {
         return;
     }
 
-    // Calcular o rendimento mensal
+    // Calculate monthly income
     let rendimentoMensal = periodo === 'anual' ? rendimentoBrutoInput / 14 : rendimentoBrutoInput;
 
-    // Calcular o IRS mensal (aplicado sobre 75% do rendimento para regime simplificado)
+    // Calculate IRS based on the current tax system (applied on 75% of income for simplified independent workers)
     let rendimentoTributavel = tipoTrabalhador === 'independenteSimplificado' ? rendimentoMensal * 0.75 : rendimentoMensal;
     let irsMensal = calcularIRS(rendimentoTributavel);
 
-    // Calcular Segurança Social (21.4% sobre 70% do rendimento bruto para independentes)
+    // Calculate Social Security
     let segurancaSocialMensal;
     if (tipoTrabalhador === 'porContaOutrem') {
-        segurancaSocialMensal = rendimentoMensal * 0.11;  // 11% para empregados
+        segurancaSocialMensal = rendimentoMensal * 0.11;  // 11% for employees
     } else if (tipoTrabalhador === 'independenteSimplificado') {
-        segurancaSocialMensal = rendimentoMensal * 0.70 * 0.214;  // 21.4% sobre 70% do rendimento para independentes simplificados
-        // Garantir que o valor não seja menor que a contribuição mínima (€72.04)
-        const contribuicaoMinima = 480.43 * 0.70 * 0.214;  // Minimo para 2024
+        segurancaSocialMensal = rendimentoMensal * 0.70 * 0.214;  // 21.4% on 70% of gross income for independent workers
+        const contribuicaoMinima = 480.43 * 0.70 * 0.214;  // Minimum contribution for 2024
         if (segurancaSocialMensal < contribuicaoMinima) {
             segurancaSocialMensal = contribuicaoMinima;
         }
     } else if (tipoTrabalhador === 'independenteContabilidade') {
-        segurancaSocialMensal = rendimentoMensal * 0.214;  // 21.4% para independentes com contabilidade organizada
+        segurancaSocialMensal = rendimentoMensal * 0.214;  // 21.4% for independent workers with organized accounting
     } else {
         segurancaSocialMensal = 0;
     }
 
-    // Salário Líquido Mensal
+    // Calculate monthly net salary
     let salarioLiquidoMensal = rendimentoMensal - irsMensal - segurancaSocialMensal;
 
-    // Calcular valores anuais (14 meses)
+    // Calculate annual values (14 months)
     let rendimentoBrutoAnual = rendimentoMensal * 14;
     let irsAnual = irsMensal * 14;
     let segurancaSocialAnual = segurancaSocialMensal * 14;
     let salarioLiquidoAnual = salarioLiquidoMensal * 14;
 
-    // Salário Líquido com a Iniciativa Liberal
+    // Calculate net salary with Iniciativa Liberal's IRS
     let salarioLiquidoLiberalAnual = calcularIniciativaLiberal(rendimentoBrutoAnual, segurancaSocialAnual);
     let salarioLiquidoLiberalMensal = salarioLiquidoLiberalAnual / 14;
 
-    // Exibir os resultados
+    // Display the results
     exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, salarioLiquidoAnual, salarioLiquidoLiberalAnual);
 }
+
 
 
 
@@ -211,12 +213,19 @@ function calcularIniciativaLiberal(rendimentoAnual, segurancaSocialAnual) {
 
 // Função para calcular o IRS com a Iniciativa Liberal (apenas o valor do IRS)
 function calcularIRSLiberal(rendimentoAnual) {
+    const SALARIO_MINIMO_NACIONAL_ANUAL = 870 * 14; // Minimum wage: €870 per month * 14 months
+    let rendimentoTributavel = rendimentoAnual - SALARIO_MINIMO_NACIONAL_ANUAL; // Tax only applied to income above the minimum wage
     let irsLiberal = 0;
 
-    if (rendimentoAnual <= 30000) {
-        irsLiberal = rendimentoAnual * 0.15;
+    if (rendimentoTributavel <= 0) {
+        // No tax if income is less than or equal to the minimum wage
+        irsLiberal = 0;
+    } else if (rendimentoTributavel <= 30000) {
+        // Apply 15% to income above the minimum wage and below €30,000
+        irsLiberal = rendimentoTributavel * 0.15;
     } else {
-        irsLiberal = (30000 * 0.15) + ((rendimentoAnual - 30000) * 0.28);
+        // Apply 15% to the first €30,000 and 28% to the rest
+        irsLiberal = (30000 * 0.15) + ((rendimentoTributavel - 30000) * 0.28);
     }
 
     return irsLiberal;
@@ -313,11 +322,6 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
     // Toggle visibility of Mensal/Anual based on selected period
     toggleMensalAnualResults();
 }
-
-
-
-
-
 
 
 // Função para gerar gráficos
