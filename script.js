@@ -406,19 +406,25 @@ function gerarGrafico(canvasId, salarioBruto, irs, segurancaSocial, titulo, isIn
                     label: 'Salário Líquido',
                     data: [salarioLiquido],
                     backgroundColor: backgroundColors[2],
-                    borderRadius: 8,
+                    borderRadius: {
+                        topLeft: 4,
+                        bottomLeft: 4,
+                        topRight: 0,
+                        bottomRight: 0
+                    },
+                    borderSkipped: false // Ensure borders are applied everywhere
                 },
                 {
                     label: 'IRS',
                     data: [irs],
                     backgroundColor: backgroundColors[0],
-                    borderRadius: 8,
+                    borderRadius: 4,
                 },
                 {
                     label: 'Segurança Social',
                     data: [segurancaSocial],
                     backgroundColor: backgroundColors[1],
-                    borderRadius: 8,
+                    borderRadius: 4,
                 }
             ]
         },
