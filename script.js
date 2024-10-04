@@ -291,7 +291,7 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
         </p>
         <p>
         <span class="dot dot-salario-liquido"></span>
-        <span class="icon"><img src="./icons/Check Circle.svg" alt="Check Circle"></span>
+        <span class="icon"><img src="./icons/Check circle.svg" alt="Check Circle"></span>
         <span class="label">Salário Líquido (${salarioLiquidoPercent}%):</span>
         <span class="valor">€${formatNumber(salarioLiquidoAnual)}</span>
         </p>
@@ -338,7 +338,7 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
         </p>
         <p>
         <span class="dot dot-salario-liquido"></span>
-        <span class="icon"><img src="./icons/Check Circle.svg" alt="Check Circle"></span>
+        <span class="icon"><img src="./icons/Check circle.svg" alt="Check Circle"></span>
         <span class="label">Salário Líquido (${salarioLiquidoPercent}%):</span>
         <span class="valor">€${formatNumber(salarioLiquidoMensal)}</span
         </p>
