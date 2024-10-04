@@ -1,34 +1,61 @@
-window.addEventListener('DOMContentLoaded', function() {
-    // Set default value for "Rendimento Bruto" and default selection
-    const rendimentoBrutoInput = document.getElementById('rendimentoBruto');
-    rendimentoBrutoInput.value = 2000; // Set default value
+// Initialize Supabase
+const supabaseUrl = 'https://lauaziguiohgnbidupoz.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxhdWF6aWd1aW9oZ25iaWR1cG96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjgwNzU1MzAsImV4cCI6MjA0MzY1MTUzMH0.MqT20CxX2kyo5mbIm2ijLc7p-LM4Xi2Tc-BIDi4W1ac';
+const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-    // Atualizar o número de dependentes em tempo real
+window.addEventListener('DOMContentLoaded', function() {
+    // Set default value for "Rendimento Bruto"
+    const rendimentoBrutoInput = document.getElementById('rendimentoBruto');
+    rendimentoBrutoInput.value = 2000;
+
+    // Update the number of dependents in real-time (UI only)
     document.getElementById('dependentes').addEventListener('input', function() {
         document.getElementById('numDependentes').textContent = this.value;
-    });
-
-    // Event listeners for automatic recalculation when relevant inputs change
-    document.getElementById('rendimentoBruto').addEventListener('input', calcularSalarioLiquido);
-    document.getElementById('localizacao').addEventListener('change', calcularSalarioLiquido);
-    document.getElementById('estadoCivil').addEventListener('change', calcularSalarioLiquido);
-    document.getElementById('dependentes').addEventListener('input', calcularSalarioLiquido);
-    document.getElementById('tipoTrabalhador').addEventListener('change', calcularSalarioLiquido);
-    document.querySelectorAll('input[name="periodo"]').forEach(radio => {
-        radio.addEventListener('change', function() {
-            calcularSalarioLiquido();
-            toggleMensalAnualResults(); // Show/Hide results based on the selected period
-        });
     });
 
     // Initial calculation to show default results
     calcularSalarioLiquido();
     toggleMensalAnualResults();
 
-    // Call this after loading DOM to replace icons
-    feather.replace();
+    // Add event listener for the simulation button to trigger calculation
+    document.getElementById('simular').addEventListener('click', function() {
+        calcularSalarioLiquido();  // Perform calculation
+        toggleMensalAnualResults();  // Show/hide relevant results
+        saveSimulationResult();  // Save result to Supabase
+    });
 
+    // Function to save the simulation result
+    async function saveSimulationResult() {
+        const rendimentoBruto = parseFloat(document.getElementById('rendimentoBruto').value);
+        const localizacao = document.getElementById('localizacao').value;
+        const estadoCivil = document.getElementById('estadoCivil').value;
+        const dependentes = parseInt(document.getElementById('dependentes').value);
+        const tipoTrabalhador = document.getElementById('tipoTrabalhador').value;
+        const periodo = document.querySelector('input[name="periodo"]:checked').value === 'mensal';
+
+        // Insert into the Supabase table
+        const { data, error } = await supabase
+            .from('salarioportuguessimulador')
+            .insert([
+                {
+                    rendimentoBruto: rendimentoBruto,
+                    localizacao: localizacao,
+                    estadoCivil: estadoCivil,
+                    dependentes: dependentes,
+                    tipoTrabalhador: tipoTrabalhador,
+                    periodo: periodo,
+                }
+            ]);
+
+        if (error) {
+            console.error('Error saving simulation:', error);
+        } else {
+            console.log('Simulation saved:', data);
+        }
+    }
 });
+
+
 
 // Função para alternar visibilidade dos resultados "Mensal" e "Anual"
 function toggleMensalAnualResults() {
