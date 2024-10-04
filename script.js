@@ -1,5 +1,13 @@
-window.addEventListener('DOMContentLoaded', function() {
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
+// Initialize Supabase
+const supabaseUrl = 'https://lauaziguiohgnbidupoz.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxhdWF6aWd1aW9oZ25iaWR1cG96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjgwNzU1MzAsImV4cCI6MjA0MzY1MTUzMH0.MqT20CxX2kyo5mbIm2ijLc7p-LM4Xi2Tc-BIDi4W1ac';
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+console.log('Supabase initialized:', supabase);
+
+window.addEventListener('DOMContentLoaded', function() {
     // Set default value for "Rendimento Bruto"
     const rendimentoBrutoInput = document.getElementById('rendimentoBruto');
     rendimentoBrutoInput.value = 2000;
@@ -31,7 +39,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
         // Insert into the Supabase table
         const { data, error } = await supabase
-            .from('salarioportuguessimulador')
+            .from('salarioPortuguesSimulador')
             .insert([
                 {
                     rendimentoBruto: rendimentoBruto,
@@ -50,7 +58,6 @@ window.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
-
 
 
 // Função para alternar visibilidade dos resultados "Mensal" e "Anual"
