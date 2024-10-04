@@ -129,6 +129,7 @@ select option[disabled] {
 
 .valor {
   font-family: 'Lato', monospace;
+  font-weight: bold;
 }
 
 .input-segmented-container {
@@ -433,6 +434,12 @@ canvas {
   height: auto !important;
   max-height: 120px;
   /* Adjust height to fit the bars */
+}
+
+.icon {
+  height: 20px;
+  display: flex;
+  margin-right: 8px;
 }
 
 

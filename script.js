@@ -269,26 +269,44 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
     secaoAnual.className = 'resultado anual';
     secaoAnual.innerHTML = `
     <div class="resultados-texto">
-        <h2>Distribuição Anual</h2>
+        <h2>Simulação Anual</h2>
         <div class="graficos">
             <canvas id="graficoAnual" width="720" height="60"></canvas>
         </div>
         <p>
         <span class="dot dot-salario-bruto"></span>
-        <span class="icon"><i data-feather="briefcase"></i></span>
+        <span class="icon"><img src="./icons/Briefcase.svg" alt="Briefcase"></span>
         <span class="label">Salário Bruto:</span>
         <span class="valor">€${formatNumber(rendimentoBrutoAnual)}</span></p>
-        <p><span class="dot dot-irs"></span><span class="label">IRS (${irsPercent}%):</span> <span class="valor">€${formatNumber(irsAnual)}</span></p>
-        <p><span class="dot dot-segurança-social"></span><span class="label">Segurança Social (${segurancaSocialPercent}%):</span> <span class="valor">€${formatNumber(segurancaSocialAnual)}</span></p>
-        <p><span class="dot dot-salario-liquido"></span><span class="label">Salário Líquido (${salarioLiquidoPercent}%):</span> <span class="valor">€${formatNumber(salarioLiquidoAnual)}</span></p>
+        <p>
+        <span class="dot dot-irs"></span>
+        <span class="icon"><img src="./icons/Archive.svg" alt="Archive"></span>
+        <span class="label">IRS (${irsPercent}%):</span>
+        <span class="valor">€${formatNumber(irsAnual)}</span>
+        </p>
+        <p><span class="dot dot-segurança-social"></span>
+        <span class="icon"><img src="./icons/Shield.svg" alt="Shield"></span>
+        <span class="label">Segurança Social (${segurancaSocialPercent}%):</span>
+        <span class="valor">€${formatNumber(segurancaSocialAnual)}</span>
+        </p>
+        <p>
+        <span class="dot dot-salario-liquido"></span>
+        <span class="icon"><img src="./icons/Check Circle.svg" alt="Check Circle"></span>
+        <span class="label">Salário Líquido (${salarioLiquidoPercent}%):</span>
+        <span class="valor">€${formatNumber(salarioLiquidoAnual)}</span>
+        </p>
 
         <!-- Iniciativa Liberal - Anual Section -->
-        <h4>Distribuição Anual - IL</h4>
+        <h4>Simulação Anual - IL</h4>
         <div class="graficos">
             <canvas id="graficoAnualLiberal" width="720" height="48"></canvas>
         </div>
-        <p><span class="dot dot-salario-liquido-il"></span><span class="label">Salário Líquido - Iniciativa Liberal (${salarioLiquidoLiberalPercent}%):</span> 
-        <span class="valor" style="background-color: #62ad50; color: #ffffff; font-weight: bold; padding: 4px 8px; border-radius: 4px;">€${formatNumber(salarioLiquidoLiberalAnual)} (+€${formatNumber(extraAnual)})</span></p>
+        <p>
+        <span class="dot dot-salario-liquido-il"></span>
+        <span class="icon"><img src="./icons/Iniciativa_Liberal_Icon 1.svg" alt="Iniciativa_Liberal_Icon 1"></span>
+        <span class="label">Salário Líquido - Iniciativa Liberal (${salarioLiquidoLiberalPercent}%):</span> 
+        <span class="valor" style="background-color: #62ad50; color: #ffffff; font-weight: bold; padding: 4px 8px; border-radius: 4px;">€${formatNumber(salarioLiquidoLiberalAnual)} (+€${formatNumber(extraAnual)})</span>
+        </p>
     </div>
     `;
 
@@ -297,21 +315,43 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
     secaoMensal.className = 'resultado mensal';
     secaoMensal.innerHTML = `
     <div class="resultados-texto">
-        <h2>Distribuição Mensal</h2>
+        <h2>Simulação Mensal</h2>
         <div class="graficos">
             <canvas id="graficoMensal" width="720" height="60"></canvas>
         </div>
-        <p><span class="dot dot-salario-bruto"></span><span class="label">Salário Bruto:</span> <span class="valor">€${formatNumber(rendimentoBrutoMensal)}</span></p>
-        <p><span class="dot dot-irs"></span><span class="label">IRS (${irsPercent}%):</span> <span class="valor">€${formatNumber(irsMensal)}</span></p>
-        <p><span class="dot dot-segurança-social"></span><span class="label">Segurança Social (${segurancaSocialPercent}%):</span> <span class="valor">€${formatNumber(segurancaSocialMensal)}</span></p>
-        <p><span class="dot dot-salario-liquido"></span><span class="label">Salário Líquido (${salarioLiquidoPercent}%):</span> <span class="valor">€${formatNumber(salarioLiquidoMensal)}</span></p>
+        <p>
+        <span class="dot dot-salario-bruto"></span>
+        <span class="icon"><img src="./icons/Briefcase.svg" alt="Briefcase"></span>
+        <span class="label">Salário Bruto:</span>
+        <span class="valor">€${formatNumber(rendimentoBrutoMensal)}</span>
+        </p>
+        <p><span class="dot dot-irs"></span>
+        <span class="icon"><img src="./icons/Archive.svg" alt="Archive"></span>
+        <span class="label">IRS (${irsPercent}%):</span>
+        <span class="valor">€${formatNumber(irsMensal)}</span>
+        </p>
+        <p>
+        <span class="dot dot-segurança-social"></span>
+        <span class="icon"><img src="./icons/Shield.svg" alt="Shield"></span>
+        <span class="label">Segurança Social (${segurancaSocialPercent}%):</span>
+        <span class="valor">€${formatNumber(segurancaSocialMensal)}</span>
+        </p>
+        <p>
+        <span class="dot dot-salario-liquido"></span>
+        <span class="icon"><img src="./icons/Check Circle.svg" alt="Check Circle"></span>
+        <span class="label">Salário Líquido (${salarioLiquidoPercent}%):</span>
+        <span class="valor">€${formatNumber(salarioLiquidoMensal)}</span
+        </p>
 
         <!-- Iniciativa Liberal - Mensal Section -->
-        <h4>Distribuição Mensal - IL</h4>
+        <h4>Simulação Mensal - IL</h4>
         <div class="graficos">
             <canvas id="graficoMensalLiberal" width="720" height="48"></canvas>
         </div>
-        <p><span class="dot dot-salario-liquido-il"></span><span class="label">Salário Líquido - Iniciativa Liberal (${salarioLiquidoLiberalPercent}%):</span> 
+        <p>
+        <span class="dot dot-salario-liquido-il"></span>
+        <span class="icon"><img src="./icons/Iniciativa_Liberal_Icon 1.svg" alt="Iniciativa_Liberal_Icon 1"></span>
+        <span class="label">Salário Líquido - Iniciativa Liberal (${salarioLiquidoLiberalPercent}%):</span> 
         <span class="valor" style="background-color: #62ad50; color: #ffffff; font-weight: bold; padding: 4px 8px; border-radius: 4px;">€${formatNumber(salarioLiquidoLiberalMensal)} (+€${formatNumber(extraMensal)})</span></p>
     </div>
     `;
