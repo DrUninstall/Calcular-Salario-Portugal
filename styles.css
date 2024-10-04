@@ -437,8 +437,6 @@ canvas {
 
 
 
-
-
 /* Desktop and Tablet Screens */
 @media screen and (min-width: 1024px) {
   .simulador-container {
@@ -495,8 +493,6 @@ canvas {
 @media screen and (max-width: 480px) {
   .simulador-container {
     padding: 8px;
-    /* Minimal padding for very small screens */
-    margin: 0 8px;
   }
 }
 

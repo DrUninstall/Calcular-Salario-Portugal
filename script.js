@@ -24,6 +24,10 @@ window.addEventListener('DOMContentLoaded', function() {
     // Initial calculation to show default results
     calcularSalarioLiquido();
     toggleMensalAnualResults();
+
+    // Call this after loading DOM to replace icons
+    feather.replace();
+
 });
 
 // Função para alternar visibilidade dos resultados "Mensal" e "Anual"
@@ -269,7 +273,11 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
         <div class="graficos">
             <canvas id="graficoAnual" width="720" height="60"></canvas>
         </div>
-        <p><span class="dot dot-salario-bruto"></span><span class="label">Salário Bruto:</span> <span class="valor">€${formatNumber(rendimentoBrutoAnual)}</span></p>
+        <p>
+        <span class="dot dot-salario-bruto"></span>
+        <span class="icon"><i data-feather="briefcase"></i></span>
+        <span class="label">Salário Bruto:</span>
+        <span class="valor">€${formatNumber(rendimentoBrutoAnual)}</span></p>
         <p><span class="dot dot-irs"></span><span class="label">IRS (${irsPercent}%):</span> <span class="valor">€${formatNumber(irsAnual)}</span></p>
         <p><span class="dot dot-segurança-social"></span><span class="label">Segurança Social (${segurancaSocialPercent}%):</span> <span class="valor">€${formatNumber(segurancaSocialAnual)}</span></p>
         <p><span class="dot dot-salario-liquido"></span><span class="label">Salário Líquido (${salarioLiquidoPercent}%):</span> <span class="valor">€${formatNumber(salarioLiquidoAnual)}</span></p>
