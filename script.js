@@ -1,9 +1,5 @@
-// Initialize Supabase
-const supabaseUrl = 'https://lauaziguiohgnbidupoz.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxhdWF6aWd1aW9oZ25iaWR1cG96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjgwNzU1MzAsImV4cCI6MjA0MzY1MTUzMH0.MqT20CxX2kyo5mbIm2ijLc7p-LM4Xi2Tc-BIDi4W1ac';
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
 window.addEventListener('DOMContentLoaded', function() {
+
     // Set default value for "Rendimento Bruto"
     const rendimentoBrutoInput = document.getElementById('rendimentoBruto');
     rendimentoBrutoInput.value = 2000;
