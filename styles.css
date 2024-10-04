@@ -1,7 +1,6 @@
 .simulador-container {
   max-width: 100%;
   background-color: #fcfcfc;
-  border-radius: 8px;
   box-shadow: 4px 16px 32px rgba(0, 0, 0, 0.1);
   padding: 16px;
   margin: 120px auto;
@@ -137,30 +136,26 @@ select option[disabled] {
   align-items: center;
   gap: 16px;
   margin-bottom: 24px;
-  height: 48px;
+  height: auto;
+  flex-wrap: wrap;
 }
 
 .input-segmented-container input[type="number"] {
   flex: 1;
-  /* Makes the input take up available space */
   margin: 0;
 }
 
 .segmented-button {
   display: flex;
-  align-items: center;
-  /* Ensure content is vertically centered */
+  flex-wrap: wrap;
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid #dfe3eb;
   background-color: #f9fafc;
   height: 48px;
-  /* Ensure the height is consistent */
   width: fit-content;
   padding: 0;
-  /* Remove any internal padding */
   margin: 0;
-  /* Remove any margin */
   box-shadow: 0px 2px 4px -2px rgba(0, 0, 0, 0.08), 0px 4px 8px -2px rgba(0, 0, 0, 0.04);
 }
 
@@ -170,16 +165,12 @@ select option[disabled] {
 
 .segmented-button label {
   flex: 1;
-  display: flex;
-  /* Align text inside the label */
-  align-items: center;
-  /* Vertically center text */
-  justify-content: center;
-  /* Horizontally center text */
   padding: 12px 20px;
-  /* Horizontal padding only */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
   margin: 0;
-  /* Remove any margin */
   background-color: #ffffff;
   color: #2b2e4a;
   cursor: pointer;
@@ -325,6 +316,7 @@ input[type="range"]:focus::-webkit-slider-runnable-track {
   margin-top: 20px;
   padding: 10px;
   border: 1px solid #26538e;
+  border-radius: 8px;
 }
 
 #resultados h3 {
@@ -460,10 +452,8 @@ canvas {
 /* Small Tablets and Mobile Screens */
 @media screen and (max-width: 1024px) {
   .simulador-container {
-    padding: 16px;
-    /* Adjusted for small screens */
-    margin: 0 16px;
-    /* Provide some margin on small screens to prevent overflow */
+    padding: 0 16px;
+    margin: 0;
     width: 100%;
   }
 
@@ -507,7 +497,6 @@ canvas {
     padding: 8px;
     /* Minimal padding for very small screens */
     margin: 0 8px;
-    /* Ensure there's still a bit of margin on the sides */
   }
 }
 

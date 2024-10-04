@@ -1,8 +1,20 @@
 window.addEventListener('DOMContentLoaded', function() {
-// Atualizar o número de dependentes em tempo real
-document.getElementById('dependentes').addEventListener('input', function() {
-    document.getElementById('numDependentes').textContent = this.value;
+    // Atualizar o número de dependentes em tempo real
+    document.getElementById('dependentes').addEventListener('input', function() {
+        document.getElementById('numDependentes').textContent = this.value;
+    });
+
+    // Event listeners for automatic recalculation when relevant inputs change
+    document.getElementById('rendimentoBruto').addEventListener('input', calcularSalarioLiquido);
+    document.getElementById('localizacao').addEventListener('change', calcularSalarioLiquido);
+    document.getElementById('estadoCivil').addEventListener('change', calcularSalarioLiquido);
+    document.getElementById('dependentes').addEventListener('input', calcularSalarioLiquido);
+    document.getElementById('tipoTrabalhador').addEventListener('change', calcularSalarioLiquido);
+    document.querySelectorAll('input[name="periodo"]').forEach(radio => {
+        radio.addEventListener('change', calcularSalarioLiquido);
+    });
 });
+
 
 // Tabelas de IRS atualizadas
 const tabelasIRS = [
@@ -404,5 +416,4 @@ document.getElementById('dependentes').addEventListener('input', function() {
 
 
 // Adicionar evento ao botão de simulação
-document.getElementById('simular').addEventListener('click', calcularSalarioLiquido);
-});
+// document.getElementById('simular').addEventListener('click', calcularSalarioLiquido);
