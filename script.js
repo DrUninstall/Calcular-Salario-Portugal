@@ -1,4 +1,8 @@
 window.addEventListener('DOMContentLoaded', function() {
+    // Set default value for "Rendimento Bruto" and default selection
+    const rendimentoBrutoInput = document.getElementById('rendimentoBruto');
+    rendimentoBrutoInput.value = 2000; // Set default value
+
     // Atualizar o número de dependentes em tempo real
     document.getElementById('dependentes').addEventListener('input', function() {
         document.getElementById('numDependentes').textContent = this.value;
@@ -11,9 +15,31 @@ window.addEventListener('DOMContentLoaded', function() {
     document.getElementById('dependentes').addEventListener('input', calcularSalarioLiquido);
     document.getElementById('tipoTrabalhador').addEventListener('change', calcularSalarioLiquido);
     document.querySelectorAll('input[name="periodo"]').forEach(radio => {
-        radio.addEventListener('change', calcularSalarioLiquido);
+        radio.addEventListener('change', function() {
+            calcularSalarioLiquido();
+            toggleMensalAnualResults(); // Show/Hide results based on the selected period
+        });
     });
+
+    // Initial calculation to show default results
+    calcularSalarioLiquido();
+    toggleMensalAnualResults();
 });
+
+// Função para alternar visibilidade dos resultados "Mensal" e "Anual"
+function toggleMensalAnualResults() {
+    const selectedPeriod = document.querySelector('input[name="periodo"]:checked').value;
+    const secaoAnual = document.querySelector('.resultado.anual');
+    const secaoMensal = document.querySelector('.resultado.mensal');
+
+    if (selectedPeriod === 'mensal') {
+        if (secaoMensal) secaoMensal.style.display = 'block';
+        if (secaoAnual) secaoAnual.style.display = 'none';
+    } else if (selectedPeriod === 'anual') {
+        if (secaoMensal) secaoMensal.style.display = 'none';
+        if (secaoAnual) secaoAnual.style.display = 'block';
+    }
+}
 
 
 // Tabelas de IRS atualizadas
@@ -124,7 +150,7 @@ function calcularSalarioLiquido() {
     const localizacao = document.getElementById('localizacao').value;
     const estadoCivil = document.getElementById('estadoCivil').value;
     const dependentes = parseInt(document.getElementById('dependentes').value);
-    const periodo = document.querySelector('input[name="periodo"]:checked').value;
+    const periodo = document.querySelector('input[name="periodo"]:checked').value; // Get Mensal/Anual
     const rendimentoBrutoInput = parseFloat(document.getElementById('rendimentoBruto').value);
     const tipoTrabalhador = document.getElementById('tipoTrabalhador').value;
 
@@ -227,19 +253,20 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
 
     // Annual Section
     const secaoAnual = document.createElement('div');
-    secaoAnual.className = 'resultado';
+    secaoAnual.className = 'resultado anual';
     secaoAnual.innerHTML = `
     <div class="resultados-texto">
         <h2>Distribuição Anual</h2>
         <div class="graficos">
             <canvas id="graficoAnual" width="720" height="60"></canvas>
         </div>
-        <p><span class="dot dot-salario-bruto"></span><span class="label">Salário Bruto:</span> <span class="valor">€${formatNumber(rendimentoBrutoAnual)}</span></p> <!-- Added Salário Bruto with grey dot -->
+        <p><span class="dot dot-salario-bruto"></span><span class="label">Salário Bruto:</span> <span class="valor">€${formatNumber(rendimentoBrutoAnual)}</span></p>
         <p><span class="dot dot-irs"></span><span class="label">IRS (${irsPercent}%):</span> <span class="valor">€${formatNumber(irsAnual)}</span></p>
         <p><span class="dot dot-segurança-social"></span><span class="label">Segurança Social (${segurancaSocialPercent}%):</span> <span class="valor">€${formatNumber(segurancaSocialAnual)}</span></p>
         <p><span class="dot dot-salario-liquido"></span><span class="label">Salário Líquido (${salarioLiquidoPercent}%):</span> <span class="valor">€${formatNumber(salarioLiquidoAnual)}</span></p>
-        <!-- Salário Líquido - Iniciativa Liberal Section -->
-        <div><h4>Distribuição Anual - IL<h4></div>
+
+        <!-- Iniciativa Liberal - Anual Section -->
+        <h4>Distribuição Anual - IL</h4>
         <div class="graficos">
             <canvas id="graficoAnualLiberal" width="720" height="48"></canvas>
         </div>
@@ -250,19 +277,20 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
 
     // Monthly Section
     const secaoMensal = document.createElement('div');
-    secaoMensal.className = 'resultado';
+    secaoMensal.className = 'resultado mensal';
     secaoMensal.innerHTML = `
     <div class="resultados-texto">
         <h2>Distribuição Mensal</h2>
         <div class="graficos">
             <canvas id="graficoMensal" width="720" height="60"></canvas>
         </div>
-        <p><span class="dot dot-salario-bruto"></span><span class="label">Salário Bruto:</span> <span class="valor">€${formatNumber(rendimentoBrutoMensal)}</span></p> <!-- Added Salário Bruto with grey dot -->
+        <p><span class="dot dot-salario-bruto"></span><span class="label">Salário Bruto:</span> <span class="valor">€${formatNumber(rendimentoBrutoMensal)}</span></p>
         <p><span class="dot dot-irs"></span><span class="label">IRS (${irsPercent}%):</span> <span class="valor">€${formatNumber(irsMensal)}</span></p>
         <p><span class="dot dot-segurança-social"></span><span class="label">Segurança Social (${segurancaSocialPercent}%):</span> <span class="valor">€${formatNumber(segurancaSocialMensal)}</span></p>
         <p><span class="dot dot-salario-liquido"></span><span class="label">Salário Líquido (${salarioLiquidoPercent}%):</span> <span class="valor">€${formatNumber(salarioLiquidoMensal)}</span></p>
-        <!-- Salário Líquido - Iniciativa Liberal Section -->
-        <div><h4>Distribuição Mensal - IL<h4></div>
+
+        <!-- Iniciativa Liberal - Mensal Section -->
+        <h4>Distribuição Mensal - IL</h4>
         <div class="graficos">
             <canvas id="graficoMensalLiberal" width="720" height="48"></canvas>
         </div>
@@ -276,12 +304,17 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
 
     document.getElementById('resultados').appendChild(container);
 
-    // Generate the charts without titles
+    // Generate the charts
     gerarGrafico('graficoAnual', rendimentoBrutoAnual, irsAnual, segurancaSocialAnual);
     gerarGrafico('graficoAnualLiberal', rendimentoBrutoAnual, calcularIRSLiberal(rendimentoBrutoAnual), segurancaSocialAnual);
     gerarGrafico('graficoMensal', rendimentoBrutoMensal, irsMensal, segurancaSocialMensal);
     gerarGrafico('graficoMensalLiberal', rendimentoBrutoMensal, calcularIRSLiberal(rendimentoBrutoMensal * 14) / 14, segurancaSocialMensal);
+
+    // Toggle visibility of Mensal/Anual based on selected period
+    toggleMensalAnualResults();
 }
+
+
 
 
 
