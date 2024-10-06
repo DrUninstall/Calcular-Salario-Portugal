@@ -326,14 +326,14 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
         </p>
 
         <!-- Iniciativa Liberal - Anual Section -->
-        <h4>Simulação Anual - IL</h4>
+        <h4>Simulação Anual - Iniciativa Liberal</h4>
         <div class="graficos">
             <canvas id="graficoAnualLiberal" width="720" height="48"></canvas>
         </div>
         <p>
         <span class="dot dot-salario-liquido-il"></span>
         <span class="icon"><img src="./icons/Iniciativa_Liberal_Icon 1.svg" alt="Iniciativa_Liberal_Icon 1"></span>
-        <span class="label">Salário Líquido - Iniciativa Liberal (${salarioLiquidoLiberalPercent}%):</span> 
+        <span class="label">Salário Líquido - IL (${salarioLiquidoLiberalPercent}%):</span> 
         <span class="valor" style="background-color: #62ad50; color: #ffffff; font-weight: bold; padding: 4px 8px; border-radius: 4px;">€${formatNumber(salarioLiquidoLiberalAnual)} (+€${formatNumber(extraAnual)})</span>
         </p>
     </div>
@@ -373,14 +373,14 @@ function exibirResultados(rendimentoBrutoAnual, irsAnual, segurancaSocialAnual, 
         </p>
 
         <!-- Iniciativa Liberal - Mensal Section -->
-        <h4>Simulação Mensal - IL</h4>
+        <h4>Simulação Mensal - Iniciativa Liberal</h4>
         <div class="graficos">
             <canvas id="graficoMensalLiberal" width="720" height="48"></canvas>
         </div>
         <p>
         <span class="dot dot-salario-liquido-il"></span>
         <span class="icon"><img src="./icons/Iniciativa_Liberal_Icon 1.svg" alt="Iniciativa_Liberal_Icon 1"></span>
-        <span class="label">Salário Líquido - Iniciativa Liberal (${salarioLiquidoLiberalPercent}%):</span> 
+        <span class="label">Salário Líquido - IL (${salarioLiquidoLiberalPercent}%):</span> 
         <span class="valor" style="background-color: #62ad50; color: #ffffff; font-weight: bold; padding: 4px 8px; border-radius: 4px;">€${formatNumber(salarioLiquidoLiberalMensal)} (+€${formatNumber(extraMensal)})</span></p>
     </div>
     `;
