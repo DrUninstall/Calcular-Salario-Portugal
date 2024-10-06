@@ -13,54 +13,56 @@
 
 <body>
   <div class="simulador-container">
-    <h1>Simulador Salário Líquido 2024</h1>
+    <div class="formulario">
+      <h1>Simulador Salário Líquido 2024</h1>
 
-    <h2>1. Localização</h2>
-    <!-- 1.1. Localização -->
-    <select id="localizacao">
-      <option value="continental">Portugal Continental</option>
-      <option value="acores">Região Autónoma dos Açores</option>
-      <option value="madeira">Região Autónoma da Madeira</option>
-    </select>
+      <h2>1. Localização</h2>
+      <!-- 1.1. Localização -->
+      <select id="localizacao">
+        <option value="continental">Portugal Continental</option>
+        <option value="acores">Região Autónoma dos Açores</option>
+        <option value="madeira">Região Autónoma da Madeira</option>
+      </select>
 
-    <!-- 1.2. Estado Civil -->
-    <h2>2. Estado Civil</h2>
-    <select id="estadoCivil">
-      <option value="naoCasado">Não Casado</option>
-      <option value="casado1">Casado/Unido de Facto 1 titular</option>
-      <option value="casado2">Casado/Unido de Facto 2 titulares</option>
-    </select>
+      <!-- 1.2. Estado Civil -->
+      <h2>2. Estado Civil</h2>
+      <select id="estadoCivil">
+        <option value="naoCasado">Não Casado</option>
+        <option value="casado1">Casado/Unido de Facto 1 titular</option>
+        <option value="casado2">Casado/Unido de Facto 2 titulares</option>
+      </select>
 
-    <!-- 1.3. Nº de dependentes -->
-    <h2 for="dependentes">3. Nº de dependentes: <span id="numDependentes">0</span></label>
-    <input type="range" id="dependentes" min="0" max="10" value="0">
+      <!-- 1.3. Nº de dependentes -->
+      <h2 for="dependentes">3. Nº de dependentes: <span id="numDependentes">0</span></label>
+      <input type="range" id="dependentes" min="0" max="10" value="0">
 
-    <!-- 2. Rendimentos -->
-    <h2>2. Rendimento Bruto (€)</h2>
-    <div class="input-segmented-container">
-      <!-- 2.1.3. Input do Rendimento Bruto -->
-      <input type="number" id="rendimentoBruto" placeholder="Insira o valor em €">
-      <div class="segmented-button">
-        <!-- 2.1.2. Mensal - Anual -->
-        <input type="radio" id="mensal" name="periodo" value="mensal" checked>
-        <label for="mensal">Mensal</label>
-        <input type="radio" id="anual" name="periodo" value="anual">
-        <label for="anual">Anual</label>
+      <!-- 2. Rendimentos -->
+      <h2>2. Rendimento Bruto (€)</h2>
+      <div class="input-segmented-container">
+        <!-- 2.1.3. Input do Rendimento Bruto -->
+        <input type="number" id="rendimentoBruto" placeholder="Insira o valor em €">
+        <div class="segmented-button">
+          <!-- 2.1.2. Mensal - Anual -->
+          <input type="radio" id="mensal" name="periodo" value="mensal" checked>
+          <label for="mensal">Mensal</label>
+          <input type="radio" id="anual" name="periodo" value="anual">
+          <label for="anual">Anual</label>
+        </div>
       </div>
+
+      <!-- 3. Tipo de Trabalhador -->
+      <h2>3. Tipo de Trabalhador</h2>
+      <select id="tipoTrabalhador">
+        <option value="porContaOutrem">Trabalhador por conta de outrem</option>
+        <option value="independenteSimplificado" disabled>Trabalhador independente regime simplificado (Em Breve)</option>
+        <option value="independenteContabilidade" disabled>Trabalhador independente com contabilidade organizada (Em Breve)
+        </option>
+      </select>
+
+
+      <!-- Botão de Simulação -->
+      <button id="simular">Simular Salário Líquido</button>
     </div>
-
-    <!-- 3. Tipo de Trabalhador -->
-    <h2>3. Tipo de Trabalhador</h2>
-    <select id="tipoTrabalhador">
-      <option value="porContaOutrem">Trabalhador por conta de outrem</option>
-      <option value="independenteSimplificado" disabled>Trabalhador independente regime simplificado (Em Breve)</option>
-      <option value="independenteContabilidade" disabled>Trabalhador independente com contabilidade organizada (Em Breve)
-      </option>
-    </select>
-
-
-    <!-- Botão de Simulação -->
-    <button id="simular">Simular Salário Líquido</button>
 
     <!-- 4. Valores da Simulação -->
     <!--<h2>4. Valores da Simulação</h2>-->
@@ -69,7 +71,7 @@
     </div>
 
     <!-- Aviso Legal -->
-    <p><em>Aviso: Este simulador fornece estimativas e não substitui aconselhamento fiscal profissional. Para informações
+    <p><em>Aviso: Este simulador não substitui aconselhamento fiscal profissional. Para informações
         precisas e atualizadas, consulte um contabilista certificado ou a Autoridade Tributária.</em></p>
   </div>
 

@@ -488,7 +488,7 @@ canvas {
 
   .resultados-container {
     width: auto;
-    padding: 0;
+    padding: 16px;
     margin: 0;
   }
 
@@ -506,11 +506,30 @@ canvas {
   }
   .simulador-container {
     width: 100vw;
-    padding: 8px;
+    padding: 0;
     margin: 0;
     box-sizing: border-box;
     background-color: #fcfcfc;
     box-shadow: none;
+  }
+
+  .resultados-container {
+    background-color: #ffffff;
+    padding: 8px;
+  }
+  .formulario {
+    background-color: #ffffff;
+    padding: 8px;
+  }
+
+
+  .resultados-texto {
+    margin: 0;
+  }
+
+  .dot {
+    width: 16px;
+    height: 16px;
   }
 }
 
