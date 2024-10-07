@@ -48,6 +48,7 @@ h4 {
 .small-notice {
   font-size: 14px;
   line-height: 20px;
+  padding-bottom: 32px;
 }
 
 label {
@@ -536,6 +537,10 @@ canvas {
     flex: 1 1 100%;
     margin: 10px 0;
   }
+
+  .author-avatar {
+    display: none;
+  }
 }
 
 /* Very Small Screens */
@@ -586,6 +591,12 @@ canvas {
     height: 32px;
     border-radius: 50%;
     margin-right: 8px;
+  }
+
+  h1 {
+    color: #db3d2d !important;
+    font-size: 24px !important;
+    line-height: 32px !important;
   }
 }
 
