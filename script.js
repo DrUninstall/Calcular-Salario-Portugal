@@ -74,102 +74,84 @@ function toggleMensalAnualResults() {
     }
 }
 
+// Updated IRS tables for Não Casado sem Dependentes ou Casado 2 Titulares
+const tabelasIRS_NaoCasado = [
+    { limiteSuperior: 820, taxaMarginal: 0.00, parcelaAbater: 0.00, parcelaDependente: 0.00 },
+    { limiteSuperior: 935, taxaMarginal: 0.13, parcelaAbater: (R) => 0.13 * 2.6 * (1135.39 - R), parcelaDependente: 21.43 },
+    { limiteSuperior: 989, taxaMarginal: 0.165, parcelaAbater: (R) => 0.165 * 1.35 * (1386.11 - R), parcelaDependente: 21.43 },
+    { limiteSuperior: 1125, taxaMarginal: 0.165, parcelaAbater: 88.39, parcelaDependente: 21.43 },
+    { limiteSuperior: 1175, taxaMarginal: 0.22, parcelaAbater: 150.26, parcelaDependente: 21.43 },
+    { limiteSuperior: 1769, taxaMarginal: 0.25, parcelaAbater: 185.5, parcelaDependente: 21.43 },
+    { limiteSuperior: 2057, taxaMarginal: 0.32, parcelaAbater: 309.36, parcelaDependente: 21.43 },
+    { limiteSuperior: 2408, taxaMarginal: 0.355, parcelaAbater: 381.35, parcelaDependente: 21.43 },
+    { limiteSuperior: 3201, taxaMarginal: 0.3872, parcelaAbater: 458.76, parcelaDependente: 21.43 },
+    { limiteSuperior: 5492, taxaMarginal: 0.405, parcelaAbater: 501.49, parcelaDependente: 21.43 },
+    { limiteSuperior: 20021, taxaMarginal: 0.4495, parcelaAbater: 770.33, parcelaDependente: 21.43 },
+    { limiteSuperior: Infinity, taxaMarginal: 0.4717, parcelaAbater: 1215.80, parcelaDependente: 21.43 }
+];
 
-// Tabelas de IRS atualizadas
-const tabelasIRS = [
-    {
-        limiteSuperior: 820.00,
-        taxaMarginal: 0.00,
-        parcelaAbater: 0.00
-    },
-    {
-        limiteSuperior: 935.00,
-        taxaMarginal: 0.1325,
-        parcelaAbater: function(R) {
-            return 0.1325 * 2.6 * (1135.39 - R);
-        }
-    },
-    {
-        limiteSuperior: 1001.00,
-        taxaMarginal: 0.18,
-        parcelaAbater: function(R) {
-            return 0.18 * 1.4 * (1385.20 - R);
-        }
-    },
-    {
-        limiteSuperior: 1123.00,
-        taxaMarginal: 0.18,
-        parcelaAbater: 96.82
-    },
-    {
-        limiteSuperior: 1765.00,
-        taxaMarginal: 0.26,
-        parcelaAbater: 186.66
-    },
-    {
-        limiteSuperior: 2057.00,
-        taxaMarginal: 0.3275,
-        parcelaAbater: 305.80
-    },
-    {
-        limiteSuperior: 2664.00,
-        taxaMarginal: 0.37,
-        parcelaAbater: 393.23
-    },
-    {
-        limiteSuperior: 3193.00,
-        taxaMarginal: 0.3872,
-        parcelaAbater: 439.05
-    },
-    {
-        limiteSuperior: 4173.00,
-        taxaMarginal: 0.4005,
-        parcelaAbater: 481.52
-    },
-    {
-        limiteSuperior: 5470.00,
-        taxaMarginal: 0.41,
-        parcelaAbater: 521.17
-    },
-    {
-        limiteSuperior: 6540.00,
-        taxaMarginal: 0.4270,
-        parcelaAbater: 614.16
-    },
-    {
-        limiteSuperior: 20067.00,
-        taxaMarginal: 0.4495,
-        parcelaAbater: 761.31
-    },
-    {
-        limiteSuperior: Infinity,
-        taxaMarginal: 0.4717,
-        parcelaAbater: 1206.80
-    }
+// Updated IRS tables for Não Casado com Dependentes
+const tabelasIRS_NaoCasadoComDependentes = [
+    { limiteSuperior: 820, taxaMarginal: 0.00, parcelaAbater: 0.00, parcelaDependente: 34.29 },
+    { limiteSuperior: 935, taxaMarginal: 0.13, parcelaAbater: (R) => 0.13 * 2.6 * (1135.39 - R), parcelaDependente: 34.29 },
+    { limiteSuperior: 989, taxaMarginal: 0.165, parcelaAbater: (R) => 0.165 * 1.35 * (1386.11 - R), parcelaDependente: 34.29 },
+    { limiteSuperior: 1125, taxaMarginal: 0.165, parcelaAbater: 88.39, parcelaDependente: 34.29 },
+    { limiteSuperior: 1175, taxaMarginal: 0.22, parcelaAbater: 150.26, parcelaDependente: 34.29 },
+    { limiteSuperior: 1769, taxaMarginal: 0.25, parcelaAbater: 185.5, parcelaDependente: 34.29 },
+    { limiteSuperior: 2057, taxaMarginal: 0.32, parcelaAbater: 309.36, parcelaDependente: 34.29 },
+    { limiteSuperior: 2408, taxaMarginal: 0.355, parcelaAbater: 381.35, parcelaDependente: 34.29 },
+    { limiteSuperior: 3201, taxaMarginal: 0.3872, parcelaAbater: 458.76, parcelaDependente: 34.29 },
+    { limiteSuperior: 5492, taxaMarginal: 0.405, parcelaAbater: 501.49, parcelaDependente: 34.29 },
+    { limiteSuperior: 20021, taxaMarginal: 0.4495, parcelaAbater: 770.33, parcelaDependente: 34.29 },
+    { limiteSuperior: Infinity, taxaMarginal: 0.4717, parcelaAbater: 1215.80, parcelaDependente: 34.29 }
+];
+
+// Updated IRS tables for Casado Único Titular
+const tabelasIRS_CasadoUnicoTitular = [
+    { limiteSuperior: 904, taxaMarginal: 0.00, parcelaAbater: 0.00, parcelaDependente: 42.86 },
+    { limiteSuperior: 935, taxaMarginal: 0.13, parcelaAbater: (R) => 0.13 * 2.6 * (1251.62 - R), parcelaDependente: 42.86 },
+    { limiteSuperior: 989, taxaMarginal: 0.13, parcelaAbater: (R) => 0.13 * 1.35 * (1545.09 - R), parcelaDependente: 42.86 },
+    { limiteSuperior: 1070, taxaMarginal: 0.13, parcelaAbater: 97.54, parcelaDependente: 42.86 },
+    { limiteSuperior: 1394, taxaMarginal: 0.132, parcelaAbater: 99.68, parcelaDependente: 42.86 },
+    { limiteSuperior: 1912, taxaMarginal: 0.165, parcelaAbater: 145.69, parcelaDependente: 42.86 },
+    { limiteSuperior: 2178, taxaMarginal: 0.18, parcelaAbater: 216.11, parcelaDependente: 42.86 },
+    { limiteSuperior: 2671, taxaMarginal: 0.232, parcelaAbater: 291.09, parcelaDependente: 42.86 },
+    { limiteSuperior: 3284, taxaMarginal: 0.2594, parcelaAbater: 458.76, parcelaDependente: 42.86 },
+    { limiteSuperior: 5906, taxaMarginal: 0.3272, parcelaAbater: 510.04, parcelaDependente: 42.86 },
+    { limiteSuperior: 20064, taxaMarginal: 0.3872, parcelaAbater: 981.97, parcelaDependente: 42.86 },
+    { limiteSuperior: Infinity, taxaMarginal: 0.4717, parcelaAbater: 2678.40, parcelaDependente: 42.86 }
 ];
 
 
 
-// Função para calcular o IRS
-function calcularIRS(rendimentoMensal) {
-    let irs = 0;
 
-    for (let faixa of tabelasIRS) {
+// Função para calcular o IRS
+function calcularIRS(rendimentoMensal, estadoCivil, dependentes) {
+    let tabelaIRS;
+
+    // Choose the correct IRS table based on marital status and dependents
+    if (estadoCivil === 'naoCasado' && dependentes === 0) {
+        tabelaIRS = tabelasIRS_NaoCasado;
+    } else if (estadoCivil === 'naoCasado' && dependentes > 0) {
+        tabelaIRS = tabelasIRS_NaoCasadoComDependentes;
+    } else if (estadoCivil === 'casado1') {
+        tabelaIRS = tabelasIRS_CasadoUnicoTitular;
+    } else {
+        // Default to the non-dependent table for now if no match found
+        tabelaIRS = tabelasIRS_NaoCasado;
+    }
+
+    let irs = 0;
+    for (let faixa of tabelaIRS) {
         if (rendimentoMensal <= faixa.limiteSuperior) {
             let taxaMarginal = faixa.taxaMarginal;
-            let parcelaAbater = 0;
+            let parcelaAbater = typeof faixa.parcelaAbater === 'function' ? faixa.parcelaAbater(rendimentoMensal) : faixa.parcelaAbater;
+            let parcelaDependente = faixa.parcelaDependente * dependentes;
 
-            if (typeof faixa.parcelaAbater === 'function') {
-                parcelaAbater = faixa.parcelaAbater(rendimentoMensal);
-            } else {
-                parcelaAbater = faixa.parcelaAbater;
-            }
+            irs = rendimentoMensal * taxaMarginal - parcelaAbater - parcelaDependente;
 
-            irs = rendimentoMensal * taxaMarginal - parcelaAbater;
-
-            // Garantir que o IRS não seja negativo
+            // Ensure IRS is non-negative
             if (irs < 0) irs = 0;
-
             break;
         }
     }
@@ -184,10 +166,9 @@ const SALARIO_MINIMO_NACIONAL = 870 * 14;
 function calcularSalarioLiquido() {
     const localizacao = document.getElementById('localizacao').value;
     const estadoCivil = document.getElementById('estadoCivil').value;
-    const dependentes = parseInt(document.getElementById('dependentes').value);
+    const dependentes = parseInt(document.getElementById('dependentes').value) || 0;
     const periodo = document.querySelector('input[name="periodo"]:checked').value; // Get Mensal/Anual
     const rendimentoBrutoInput = parseFloat(document.getElementById('rendimentoBruto').value);
-    const tipoTrabalhador = document.getElementById('tipoTrabalhador').value;
 
     if (isNaN(rendimentoBrutoInput) || rendimentoBrutoInput <= 0) {
         alert('Por favor, insira um valor de rendimento bruto válido.');
@@ -198,8 +179,11 @@ function calcularSalarioLiquido() {
     let rendimentoMensal = periodo === 'anual' ? rendimentoBrutoInput / 14 : rendimentoBrutoInput;
 
     // Calculate IRS based on the current tax system (applied on 75% of income for simplified independent workers)
+    const tipoTrabalhador = document.getElementById('tipoTrabalhador').value;
     let rendimentoTributavel = tipoTrabalhador === 'independenteSimplificado' ? rendimentoMensal * 0.75 : rendimentoMensal;
-    let irsMensal = calcularIRS(rendimentoTributavel);
+
+    // Calculate IRS
+    let irsMensal = calcularIRS(rendimentoTributavel, estadoCivil, dependentes);
 
     // Calculate Social Security
     let segurancaSocialMensal;
