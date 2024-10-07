@@ -58,6 +58,20 @@ window.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const response = await fetch('https://unavatar.io/x/mbatalhamusic');
+    if (response.ok) {
+      const avatarUrl = response.url;
+      document.getElementById('authorAvatar').src = avatarUrl;
+    } else {
+      console.error('Failed to fetch Twitter avatar.');
+    }
+  } catch (error) {
+    console.error('Error fetching Twitter avatar:', error);
+  }
+});
+
 
 // Função para alternar visibilidade dos resultados "Mensal" e "Anual"
 function toggleMensalAnualResults() {
