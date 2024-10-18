@@ -8,6 +8,45 @@
   box-sizing: border-box; /* Ensure padding doesn't affect total width */
 }
 
+/* Style for the fixed top banner */
+#fixedBanner {
+  position: relative;
+  top: 0;
+  width: 100%;
+  min-height: 70px;
+  background-color: #f8f9fa;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  text-align: center;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+  box-sizing: border-box;
+  border-radius: 0 0 8px 8px;
+}
+
+#fixedBanner p {
+  font-size: 16px;
+  text-align: left;
+  color: #333;
+}
+
+#fixedBanner .visit-button {
+  color: #26538e;
+  padding: 10px 16px;
+  text-decoration: underline;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+#fixedBanner .visit-button:hover {
+  background-color: #51aaee;
+  transition: background-color 0.3s;
+}
+
+
 body {
   background-color: #f5f6fa;
   color: #636981;
@@ -502,6 +541,7 @@ canvas {
   .simulador-container {
     padding: 0 16px;
     margin: 0;
+    padding-top: 24px;
     width: 100%;
   }
 
