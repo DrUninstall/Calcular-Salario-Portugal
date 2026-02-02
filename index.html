@@ -1,676 +1,100 @@
 <!DOCTYPE html>
-<html lang="pt" data-theme="light">
+<html lang="pt">
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <meta name="description" content="Calculadora de Salário Líquido Portugal 2024/2025 - Simule o seu salário líquido com IRS, Segurança Social, subsídio de alimentação e muito mais.">
-  <meta name="keywords" content="salário líquido, Portugal, IRS, Segurança Social, calculadora, simulador">
-  <meta name="author" content="Miguel Batalha">
-  <meta name="theme-color" content="#26538e">
-
-  <!-- PWA -->
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="icons/icon-192.png">
-
-  <title>Simulador Salário Líquido 2024/2025 | Portugal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulador Salário Líquido 2024</title>
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 
 <body>
-  <!-- Skip to main content for accessibility -->
-  <a href="#main-content" class="skip-link">Saltar para o conteúdo principal</a>
-
-  <!-- Top Banner -->
-  <div id="fixedBanner" role="banner">
+  <div id="fixedBanner">
     <p>Acompanhe os preços das compras ao longo do tempo</p>
-    <a href="https://precodascompras.pt/" target="_blank" rel="noopener" class="visit-button">Visitar</a>
+    <a href="https://precodascompras.pt/" target="_blank" class="visit-button">Visitar</a>
   </div>
+  <div class="simulador-container">
+    <div class="formulario">
+      <h1>Simulador Salário Líquido 2024</h1>
 
-  <!-- Theme Toggle -->
-  <button id="themeToggle" class="theme-toggle" aria-label="Alternar modo escuro" title="Alternar modo escuro">
-    <span class="material-symbols-outlined light-icon">light_mode</span>
-    <span class="material-symbols-outlined dark-icon">dark_mode</span>
-  </button>
+      <h3>1. Localização</h3>
+      <!-- 1.1. Localização -->
+      <select id="localizacao">
+        <option value="continental">Portugal Continental</option>
+        <option value="acores">Região Autónoma dos Açores</option>
+        <option value="madeira">Região Autónoma da Madeira</option>
+      </select>
 
-  <main id="main-content" class="simulador-container">
-    <!-- Hero Section -->
-    <header class="hero-section">
-      <h1>Simulador Salário Líquido</h1>
-      <p class="hero-subtitle">Calcule o seu salário líquido em Portugal para 2024/2025. Descubra quanto recebe após impostos e contribuições.</p>
-      <div class="hero-features">
-        <span class="feature-badge"><span class="material-symbols-outlined">check_circle</span> Tabelas IRS atualizadas</span>
-        <span class="feature-badge"><span class="material-symbols-outlined">check_circle</span> Segurança Social</span>
-        <span class="feature-badge"><span class="material-symbols-outlined">check_circle</span> Subsídio Alimentação</span>
-      </div>
-    </header>
+      <!-- 1.2. Estado Civil -->
+      <h3>2. Estado Civil</h3>
+      <select id="estadoCivil">
+        <option value="naoCasado">Não Casado</option>
+        <option value="casado1">Casado/Unido de Facto 1 titular</option>
+        <option value="casado2">Casado/Unido de Facto 2 titulares</option>
+      </select>
 
-    <!-- Progress Indicator -->
-    <nav class="progress-indicator" aria-label="Progresso do formulário">
-      <div class="progress-step active" data-step="1">
-        <span class="step-number">1</span>
-        <span class="step-label">Dados Pessoais</span>
-      </div>
-      <div class="progress-line"></div>
-      <div class="progress-step" data-step="2">
-        <span class="step-number">2</span>
-        <span class="step-label">Rendimentos</span>
-      </div>
-      <div class="progress-line"></div>
-      <div class="progress-step" data-step="3">
-        <span class="step-number">3</span>
-        <span class="step-label">Benefícios</span>
-      </div>
-      <div class="progress-line"></div>
-      <div class="progress-step" data-step="4">
-        <span class="step-number">4</span>
-        <span class="step-label">Resultados</span>
-      </div>
-    </nav>
+      <!-- 1.3. Nº de dependentes -->
+      <h3 for="dependentes">3. Nº de dependentes: <span id="numDependentes">0</span></label>
+      <input type="range" id="dependentes" min="0" max="10" value="0">
 
-    <form id="salaryForm" class="formulario" novalidate>
-      <!-- Section 1: Personal Data -->
-      <section class="form-card" data-section="1" aria-labelledby="section1-title">
-        <h2 id="section1-title" class="card-title">
-          <span class="material-symbols-outlined">person</span>
-          Dados Pessoais
-        </h2>
-
-        <div class="form-group">
-          <label for="localizacao" id="localizacao-label">
-            Localização
-            <button type="button" class="tooltip-trigger" aria-label="Informação sobre localização" data-tooltip="A localização afeta as taxas de IRS. Os Açores e a Madeira têm reduções fiscais.">
-              <span class="material-symbols-outlined">help</span>
-            </button>
-          </label>
-          <select id="localizacao" aria-labelledby="localizacao-label" aria-describedby="localizacao-desc">
-            <option value="continental">Portugal Continental</option>
-            <option value="acores">Região Autónoma dos Açores</option>
-            <option value="madeira">Região Autónoma da Madeira</option>
-          </select>
-          <span id="localizacao-desc" class="field-description">Selecione onde trabalha</span>
+      <!-- 2. Rendimentos -->
+      <h3>2. Rendimento Bruto (€)</h3>
+      <div class="input-segmented-container">
+        <!-- 2.1.3. Input do Rendimento Bruto -->
+        <input type="number" id="rendimentoBruto" placeholder="Insira o valor em €">
+        <div class="segmented-button">
+          <!-- 2.1.2. Mensal - Anual -->
+          <input type="radio" id="mensal" name="periodo" value="mensal" checked>
+          <label for="mensal">Mensal</label>
+          <input type="radio" id="anual" name="periodo" value="anual">
+          <label for="anual">Anual</label>
         </div>
-
-        <div class="form-group">
-          <label for="estadoCivil" id="estadoCivil-label">
-            Estado Civil
-            <button type="button" class="tooltip-trigger" aria-label="Informação sobre estado civil" data-tooltip="O estado civil e número de titulares afeta as tabelas de retenção de IRS aplicadas.">
-              <span class="material-symbols-outlined">help</span>
-            </button>
-          </label>
-          <select id="estadoCivil" aria-labelledby="estadoCivil-label">
-            <option value="naoCasado">Não Casado</option>
-            <option value="casado1">Casado/Unido de Facto - 1 titular</option>
-            <option value="casado2">Casado/Unido de Facto - 2 titulares</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="dependentes" id="dependentes-label">
-            Número de Dependentes: <strong id="numDependentes">0</strong>
-            <button type="button" class="tooltip-trigger" aria-label="Informação sobre dependentes" data-tooltip="Dependentes são filhos ou outros dependentes fiscais. Cada dependente reduz o IRS a pagar.">
-              <span class="material-symbols-outlined">help</span>
-            </button>
-          </label>
-          <div class="range-container">
-            <input type="range" id="dependentes" min="0" max="10" value="0"
-                   aria-labelledby="dependentes-label"
-                   aria-valuemin="0" aria-valuemax="10" aria-valuenow="0">
-            <div class="range-ticks">
-              <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- IRS Jovem -->
-        <div class="form-group checkbox-group">
-          <label class="checkbox-label">
-            <input type="checkbox" id="irsJovem" aria-describedby="irsJovem-desc">
-            <span class="checkbox-custom"></span>
-            <span class="checkbox-text">
-              IRS Jovem (até 35 anos)
-              <button type="button" class="tooltip-trigger" aria-label="Informação sobre IRS Jovem" data-tooltip="Isenção parcial de IRS para jovens até 35 anos nos primeiros anos de trabalho. 100% no 1º ano, 75% no 2º, 50% no 3º e 4º, 25% no 5º.">
-                <span class="material-symbols-outlined">help</span>
-              </button>
-            </span>
-          </label>
-          <span id="irsJovem-desc" class="field-description">Benefício fiscal para jovens trabalhadores</span>
-        </div>
-
-        <div class="form-group irsJovem-options" id="irsJovemOptions" style="display: none;">
-          <label for="irsJovemAno">Ano de benefício IRS Jovem</label>
-          <select id="irsJovemAno">
-            <option value="1">1º Ano (100% isenção até limite)</option>
-            <option value="2">2º Ano (75% isenção até limite)</option>
-            <option value="3">3º/4º Ano (50% isenção até limite)</option>
-            <option value="5">5º Ano (25% isenção até limite)</option>
-          </select>
-        </div>
-
-        <!-- Disability Benefits -->
-        <div class="form-group checkbox-group">
-          <label class="checkbox-label">
-            <input type="checkbox" id="deficiencia" aria-describedby="deficiencia-desc">
-            <span class="checkbox-custom"></span>
-            <span class="checkbox-text">
-              Grau de incapacidade >= 60%
-              <button type="button" class="tooltip-trigger" aria-label="Informação sobre incapacidade" data-tooltip="Pessoas com grau de incapacidade igual ou superior a 60% têm benefícios fiscais em sede de IRS.">
-                <span class="material-symbols-outlined">help</span>
-              </button>
-            </span>
-          </label>
-          <span id="deficiencia-desc" class="field-description">Benefício fiscal para pessoas com deficiência</span>
-        </div>
-      </section>
-
-      <!-- Section 2: Income -->
-      <section class="form-card" data-section="2" aria-labelledby="section2-title">
-        <h2 id="section2-title" class="card-title">
-          <span class="material-symbols-outlined">payments</span>
-          Rendimentos
-        </h2>
-
-        <!-- Calculator Mode Toggle -->
-        <div class="form-group">
-          <label>Modo de cálculo</label>
-          <div class="segmented-button calculator-mode" role="radiogroup" aria-label="Modo de cálculo">
-            <input type="radio" id="modoNormal" name="calculatorMode" value="normal" checked>
-            <label for="modoNormal">Bruto → Líquido</label>
-            <input type="radio" id="modoReverso" name="calculatorMode" value="reverse">
-            <label for="modoReverso">Líquido → Bruto</label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="rendimentoBruto" id="rendimento-label">
-            <span id="rendimentoLabel">Rendimento Bruto</span>
-            <button type="button" class="tooltip-trigger" aria-label="Informação sobre rendimento" data-tooltip="Insira o seu salário bruto mensal ou anual. O valor anual considera 14 meses (12 meses + subsídio de férias + subsídio de Natal).">
-              <span class="material-symbols-outlined">help</span>
-            </button>
-          </label>
-          <div class="input-with-currency">
-            <span class="currency-symbol">€</span>
-            <input type="text" id="rendimentoBruto" inputmode="decimal"
-                   placeholder="0,00"
-                   aria-labelledby="rendimento-label"
-                   aria-describedby="rendimento-error"
-                   autocomplete="off">
-            <span id="rendimento-error" class="error-message" role="alert" aria-live="polite"></span>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Período</label>
-          <div class="segmented-button" role="radiogroup" aria-label="Período do rendimento">
-            <input type="radio" id="mensal" name="periodo" value="mensal" checked>
-            <label for="mensal">Mensal</label>
-            <input type="radio" id="anual" name="periodo" value="anual">
-            <label for="anual">Anual (14 meses)</label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="tipoTrabalhador" id="tipo-label">
-            Tipo de Trabalhador
-            <button type="button" class="tooltip-trigger" aria-label="Informação sobre tipo de trabalhador" data-tooltip="O tipo de vínculo laboral afeta as contribuições para a Segurança Social e a tributação em IRS.">
-              <span class="material-symbols-outlined">help</span>
-            </button>
-          </label>
-          <select id="tipoTrabalhador" aria-labelledby="tipo-label">
-            <option value="porContaOutrem">Trabalhador por conta de outrem</option>
-            <option value="independenteSimplificado">Trabalhador independente - Regime simplificado</option>
-            <option value="independenteContabilidade">Trabalhador independente - Contabilidade organizada</option>
-          </select>
-        </div>
-
-        <!-- Self-employed specific options -->
-        <div id="selfEmployedOptions" class="self-employed-options" style="display: none;">
-          <div class="form-group">
-            <label for="coeficiente">
-              Coeficiente de atividade
-              <button type="button" class="tooltip-trigger" aria-label="Informação sobre coeficiente" data-tooltip="O coeficiente determina a percentagem do rendimento que é tributada. Varia conforme o tipo de atividade.">
-                <span class="material-symbols-outlined">help</span>
-              </button>
-            </label>
-            <select id="coeficiente">
-              <option value="0.75">75% - Prestação de serviços (geral)</option>
-              <option value="0.35">35% - Venda de mercadorias e produtos</option>
-              <option value="0.15">15% - Subsídios agrícolas</option>
-              <option value="0.95">95% - Rendimentos prediais</option>
-            </select>
-          </div>
-
-          <div class="form-group checkbox-group">
-            <label class="checkbox-label">
-              <input type="checkbox" id="primeiroAno">
-              <span class="checkbox-custom"></span>
-              <span class="checkbox-text">Primeiro ano de atividade (isenção SS 12 meses)</span>
-            </label>
-          </div>
-        </div>
-
-        <!-- Part-time -->
-        <div class="form-group">
-          <label for="partTime" id="parttime-label">
-            Percentagem de trabalho: <strong id="partTimeValue">100%</strong>
-            <button type="button" class="tooltip-trigger" aria-label="Informação sobre part-time" data-tooltip="Se trabalha a tempo parcial, ajuste a percentagem. 100% = tempo inteiro.">
-              <span class="material-symbols-outlined">help</span>
-            </button>
-          </label>
-          <div class="range-container">
-            <input type="range" id="partTime" min="10" max="100" value="100" step="5"
-                   aria-labelledby="parttime-label">
-            <div class="range-labels">
-              <span>10%</span><span>50%</span><span>100%</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 14 months toggle -->
-        <div class="form-group checkbox-group">
-          <label class="checkbox-label">
-            <input type="checkbox" id="duodecimos">
-            <span class="checkbox-custom"></span>
-            <span class="checkbox-text">
-              Recebo subsídios em duodécimos
-              <button type="button" class="tooltip-trigger" aria-label="Informação sobre duodécimos" data-tooltip="Se recebe o subsídio de férias e Natal diluído nos 12 meses, ative esta opção.">
-                <span class="material-symbols-outlined">help</span>
-              </button>
-            </span>
-          </label>
-        </div>
-      </section>
-
-      <!-- Section 3: Benefits -->
-      <section class="form-card" data-section="3" aria-labelledby="section3-title">
-        <h2 id="section3-title" class="card-title">
-          <span class="material-symbols-outlined">card_giftcard</span>
-          Benefícios e Extras
-        </h2>
-
-        <!-- Food Allowance -->
-        <div class="form-group">
-          <label for="subsidioAlimentacao" id="subsidio-label">
-            Subsídio de Alimentação (€/dia)
-            <button type="button" class="tooltip-trigger" aria-label="Informação sobre subsídio alimentação" data-tooltip="O subsídio de alimentação até €6,00/dia em dinheiro ou €10,20/dia em cartão é isento de IRS e SS. Valores acima são tributados.">
-              <span class="material-symbols-outlined">help</span>
-            </button>
-          </label>
-          <div class="input-with-currency">
-            <span class="currency-symbol">€</span>
-            <input type="text" id="subsidioAlimentacao" inputmode="decimal"
-                   placeholder="0,00" value="0" aria-labelledby="subsidio-label">
-          </div>
-          <div class="form-group-inline">
-            <label class="radio-label">
-              <input type="radio" name="tipoSubsidio" value="dinheiro" checked>
-              <span>Dinheiro (isento até €6,00)</span>
-            </label>
-            <label class="radio-label">
-              <input type="radio" name="tipoSubsidio" value="cartao">
-              <span>Cartão refeição (isento até €10,20)</span>
-            </label>
-          </div>
-        </div>
-
-        <!-- Health Insurance -->
-        <div class="form-group">
-          <label for="seguroSaude" id="seguro-label">
-            Seguro de Saúde (€/mês)
-            <button type="button" class="tooltip-trigger" aria-label="Informação sobre seguro saúde" data-tooltip="Se a empresa paga seguro de saúde, esse valor é considerado rendimento em espécie e pode ser tributado.">
-              <span class="material-symbols-outlined">help</span>
-            </button>
-          </label>
-          <div class="input-with-currency">
-            <span class="currency-symbol">€</span>
-            <input type="text" id="seguroSaude" inputmode="decimal"
-                   placeholder="0,00" value="0" aria-labelledby="seguro-label">
-          </div>
-        </div>
-
-        <!-- Company Car -->
-        <div class="form-group checkbox-group">
-          <label class="checkbox-label">
-            <input type="checkbox" id="viaturaEmpresa">
-            <span class="checkbox-custom"></span>
-            <span class="checkbox-text">
-              Viatura da empresa
-              <button type="button" class="tooltip-trigger" aria-label="Informação sobre viatura" data-tooltip="Se tem viatura atribuída pela empresa para uso pessoal, esse benefício é tributado (0,75% do valor de aquisição por mês).">
-                <span class="material-symbols-outlined">help</span>
-              </button>
-            </span>
-          </label>
-        </div>
-
-        <div id="viaturaOptions" class="viatura-options" style="display: none;">
-          <div class="form-group">
-            <label for="valorViatura">Valor de aquisição da viatura (€)</label>
-            <div class="input-with-currency">
-              <span class="currency-symbol">€</span>
-              <input type="text" id="valorViatura" inputmode="decimal" placeholder="0,00" value="0">
-            </div>
-          </div>
-        </div>
-
-        <!-- Remote Work Allowance -->
-        <div class="form-group">
-          <label for="subsidioTeletrabalho" id="teletrabalho-label">
-            Subsídio de Teletrabalho (€/mês)
-            <button type="button" class="tooltip-trigger" aria-label="Informação sobre teletrabalho" data-tooltip="Compensação por despesas de teletrabalho. Isento de tributação se corresponder a despesas efetivas comprovadas.">
-              <span class="material-symbols-outlined">help</span>
-            </button>
-          </label>
-          <div class="input-with-currency">
-            <span class="currency-symbol">€</span>
-            <input type="text" id="subsidioTeletrabalho" inputmode="decimal"
-                   placeholder="0,00" value="0" aria-labelledby="teletrabalho-label">
-          </div>
-        </div>
-
-        <!-- Other Benefits -->
-        <div class="form-group">
-          <label for="outrosBeneficios" id="outros-label">
-            Outros benefícios tributáveis (€/mês)
-            <button type="button" class="tooltip-trigger" aria-label="Informação sobre outros benefícios" data-tooltip="Inclua aqui outros benefícios em espécie tributáveis como ginásio, creche acima do limite isento, etc.">
-              <span class="material-symbols-outlined">help</span>
-            </button>
-          </label>
-          <div class="input-with-currency">
-            <span class="currency-symbol">€</span>
-            <input type="text" id="outrosBeneficios" inputmode="decimal"
-                   placeholder="0,00" value="0" aria-labelledby="outros-label">
-          </div>
-        </div>
-      </section>
-
-      <!-- Quick Actions / What-if Scenarios -->
-      <div class="quick-actions">
-        <span class="quick-actions-label">Cenários rápidos:</span>
-        <button type="button" class="quick-action-btn" data-action="raise10">+10% aumento</button>
-        <button type="button" class="quick-action-btn" data-action="raise20">+20% aumento</button>
-        <button type="button" class="quick-action-btn" data-action="addDependent">+1 dependente</button>
-        <button type="button" class="quick-action-btn" data-action="minWage">Salário mínimo</button>
       </div>
 
-      <!-- Simulate Button -->
-      <button type="submit" id="simular" class="primary-btn">
-        <span class="material-symbols-outlined">calculate</span>
-        Calcular Salário Líquido
-      </button>
-    </form>
+      <!-- 3. Tipo de Trabalhador -->
+      <h3>3. Tipo de Trabalhador</h3>
+      <select id="tipoTrabalhador">
+        <option value="porContaOutrem">Trabalhador por conta de outrem</option>
+        <option value="independenteSimplificado" disabled>Trabalhador independente regime simplificado (Em Breve)</option>
+        <option value="independenteContabilidade" disabled>Trabalhador independente com contabilidade organizada (Em Breve)
+        </option>
+      </select>
 
-    <!-- Results Section -->
-    <section id="resultados" class="results-section" aria-live="polite" aria-labelledby="results-title">
-      <!-- Results will be dynamically inserted here -->
-    </section>
 
-    <!-- Results Controls (shown after calculation) -->
-    <div id="resultsControls" class="results-controls" style="display: none;">
-      <!-- IL Toggle -->
-      <div class="toggle-container">
-        <label class="toggle-label">
-          <input type="checkbox" id="showILComparison" checked>
-          <span class="toggle-custom"></span>
-          <span>Mostrar comparação Iniciativa Liberal</span>
-        </label>
-      </div>
-
-      <!-- Employer Cost Toggle -->
-      <div class="toggle-container">
-        <label class="toggle-label">
-          <input type="checkbox" id="showEmployerCost">
-          <span class="toggle-custom"></span>
-          <span>Mostrar custo para a empresa</span>
-        </label>
-      </div>
-
-      <!-- Share/Export Buttons -->
-      <div class="share-buttons">
-        <button type="button" id="shareLink" class="share-btn" aria-label="Copiar link">
-          <span class="material-symbols-outlined">link</span>
-          Copiar Link
-        </button>
-        <button type="button" id="shareImage" class="share-btn" aria-label="Guardar como imagem">
-          <span class="material-symbols-outlined">image</span>
-          Guardar Imagem
-        </button>
-        <button type="button" id="exportPDF" class="share-btn" aria-label="Exportar PDF">
-          <span class="material-symbols-outlined">picture_as_pdf</span>
-          Exportar PDF
-        </button>
-        <button type="button" id="emailResults" class="share-btn" aria-label="Enviar por email">
-          <span class="material-symbols-outlined">email</span>
-          Email
-        </button>
-      </div>
+      <!-- Botão de Simulação -->
+      <button id="simular">Simular Salário Líquido</button>
     </div>
 
-    <!-- Saved Simulations -->
-    <section class="saved-simulations-section" aria-labelledby="saved-title">
-      <h2 id="saved-title" class="section-title">
-        <span class="material-symbols-outlined">bookmark</span>
-        Simulações Guardadas
-      </h2>
-      <div id="savedSimulations" class="saved-simulations">
-        <div class="empty-state">
-          <span class="material-symbols-outlined empty-state-icon">bookmark_border</span>
-          <p class="empty-state-title">Nenhuma simulação guardada</p>
-          <p class="empty-state-description">Guarde as suas simulações para comparar diferentes cenários ou aceder rapidamente mais tarde.</p>
-          <button type="button" class="empty-state-cta" id="emptyStateSaveBtn">
-            <span class="material-symbols-outlined">bookmark_add</span>
-            Guardar Simulação Atual
-          </button>
-        </div>
-      </div>
-      <button type="button" id="saveSimulation" class="secondary-btn" style="display: none;">
-        <span class="material-symbols-outlined">bookmark_add</span>
-        Guardar Simulação Atual
-      </button>
-    </section>
+    <!-- 4. Valores da Simulação -->
+    <!--<h3>4. Valores da Simulação</h3>-->
+    <div id="resultados">
+      <!-- Resultados serão exibidos aqui -->
+    </div>
 
-    <!-- Job Comparison Tool -->
-    <section class="comparison-section" aria-labelledby="comparison-title">
-      <h2 id="comparison-title" class="section-title">
-        <span class="material-symbols-outlined">compare</span>
-        Comparar Ofertas de Emprego
-      </h2>
-      <p class="section-description">Compare duas ofertas salariais lado a lado para ver qual oferece melhor rendimento líquido.</p>
-      <div class="comparison-container">
-        <div class="comparison-job" id="job1">
-          <h3>Oferta 1</h3>
-          <div class="form-group">
-            <label for="job1Salary">Salário Bruto Mensal</label>
-            <div class="input-with-currency">
-              <span class="currency-symbol">€</span>
-              <input type="text" id="job1Salary" inputmode="decimal" placeholder="0,00">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="job1Food">Subsídio Alimentação/dia</label>
-            <div class="input-with-currency">
-              <span class="currency-symbol">€</span>
-              <input type="text" id="job1Food" inputmode="decimal" placeholder="0,00" value="0">
-            </div>
-          </div>
-          <div class="comparison-result" id="job1Result">
-            <span class="comparison-label">Líquido Mensal:</span>
-            <span class="comparison-value">--</span>
-          </div>
-        </div>
-        <div class="comparison-vs">VS</div>
-        <div class="comparison-job" id="job2">
-          <h3>Oferta 2</h3>
-          <div class="form-group">
-            <label for="job2Salary">Salário Bruto Mensal</label>
-            <div class="input-with-currency">
-              <span class="currency-symbol">€</span>
-              <input type="text" id="job2Salary" inputmode="decimal" placeholder="0,00">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="job2Food">Subsídio Alimentação/dia</label>
-            <div class="input-with-currency">
-              <span class="currency-symbol">€</span>
-              <input type="text" id="job2Food" inputmode="decimal" placeholder="0,00" value="0">
-            </div>
-          </div>
-          <div class="comparison-result" id="job2Result">
-            <span class="comparison-label">Líquido Mensal:</span>
-            <span class="comparison-value">--</span>
-          </div>
-        </div>
-      </div>
-      <button type="button" id="compareJobs" class="secondary-btn">
-        <span class="material-symbols-outlined">compare_arrows</span>
-        Comparar Ofertas
-      </button>
-      <div id="comparisonSummary" class="comparison-summary" style="display: none;"></div>
-    </section>
+    <!-- Aviso Legal -->
+    <p><em class="small-notice">Este simulador não substitui aconselhamento fiscal profissional. Para informações
+        precisas e atualizadas, consulte um contabilista certificado ou a Autoridade Tributária.</em></p>
 
-    <!-- Tax Bracket Visualization -->
-    <section class="brackets-section" aria-labelledby="brackets-title">
-      <h2 id="brackets-title" class="section-title">
-        <span class="material-symbols-outlined">leaderboard</span>
-        Escalões de IRS 2024/2025
-      </h2>
-      <p class="section-description">Visualize em que escalão se encontra o seu rendimento e como é calculado o imposto progressivamente.</p>
-      <div id="bracketVisualization" class="bracket-visualization">
-        <!-- Will be populated by JS -->
-      </div>
-      <div id="bracketExplanation" class="bracket-explanation">
-        <p>O IRS em Portugal é calculado de forma progressiva. Isto significa que apenas a parte do rendimento que excede cada escalão é taxada à taxa desse escalão.</p>
-      </div>
-    </section>
-
-    <!-- Historical Comparison -->
-    <section class="historical-section" aria-labelledby="historical-title">
-      <h2 id="historical-title" class="section-title">
-        <span class="material-symbols-outlined">history</span>
-        Comparação Histórica
-      </h2>
-      <p class="section-description">Veja como o mesmo salário bruto se traduziria em líquido nos últimos anos.</p>
-      <div class="form-group">
-        <label for="historicalSalary">Salário Bruto Mensal para comparar</label>
-        <div class="input-with-currency">
-          <span class="currency-symbol">€</span>
-          <input type="text" id="historicalSalary" inputmode="decimal" placeholder="0,00">
-        </div>
-      </div>
-      <button type="button" id="compareHistorical" class="secondary-btn">
-        <span class="material-symbols-outlined">timeline</span>
-        Ver Evolução
-      </button>
-      <div id="historicalChart" class="historical-chart" style="display: none;">
-        <canvas id="historicalCanvas"></canvas>
-      </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section class="faq-section" aria-labelledby="faq-title">
-      <h2 id="faq-title" class="section-title">
-        <span class="material-symbols-outlined">help</span>
-        Perguntas Frequentes
-      </h2>
-
-      <div class="faq-list">
-        <details class="faq-item">
-          <summary>O que é o IRS e como é calculado?</summary>
-          <div class="faq-answer">
-            <p>O IRS (Imposto sobre o Rendimento das Pessoas Singulares) é um imposto progressivo que incide sobre os rendimentos dos cidadãos portugueses. É calculado através de escalões - quanto mais se ganha, maior a taxa marginal aplicada. Cada escalão tem uma taxa específica que se aplica apenas à porção do rendimento que cai nesse escalão.</p>
-          </div>
-        </details>
-
-        <details class="faq-item">
-          <summary>O que é a Segurança Social?</summary>
-          <div class="faq-answer">
-            <p>A Segurança Social é um sistema de proteção social que garante direitos como subsídio de desemprego, pensões, subsídio de doença, etc. Os trabalhadores por conta de outrem contribuem com 11% do salário bruto, enquanto as empresas pagam 23,75% adicionais.</p>
-          </div>
-        </details>
-
-        <details class="faq-item">
-          <summary>Porque é que se fala em 14 meses em Portugal?</summary>
-          <div class="faq-answer">
-            <p>Em Portugal, os trabalhadores recebem tradicionalmente 14 salários por ano: 12 mensalidades normais + subsídio de férias + subsídio de Natal. Por isso, quando se fala em salário anual, multiplica-se o mensal por 14 e não por 12.</p>
-          </div>
-        </details>
-
-        <details class="faq-item">
-          <summary>O que é o IRS Jovem?</summary>
-          <div class="faq-answer">
-            <p>O IRS Jovem é um benefício fiscal para jovens até 35 anos nos seus primeiros anos de trabalho após conclusão de estudos. Oferece isenção parcial: 100% no 1º ano, 75% no 2º ano, 50% no 3º e 4º anos, e 25% no 5º ano, até um limite de rendimento.</p>
-          </div>
-        </details>
-
-        <details class="faq-item">
-          <summary>Como funciona o subsídio de alimentação?</summary>
-          <div class="faq-answer">
-            <p>O subsídio de alimentação é isento de IRS e Segurança Social até certos limites: €6,00/dia se pago em dinheiro ou €10,20/dia se pago em cartão refeição. Valores acima destes limites são tributados. É pago apenas por dias efetivamente trabalhados.</p>
-          </div>
-        </details>
-
-        <details class="faq-item">
-          <summary>O que é a proposta da Iniciativa Liberal?</summary>
-          <div class="faq-answer">
-            <p>A Iniciativa Liberal propõe um sistema fiscal simplificado com apenas duas taxas: 15% para rendimentos até €30.000 acima do salário mínimo, e 28% para rendimentos superiores. O rendimento até ao salário mínimo seria isento de IRS.</p>
-          </div>
-        </details>
-
-        <details class="faq-item">
-          <summary>Este simulador é oficial?</summary>
-          <div class="faq-answer">
-            <p>Não. Este é um simulador independente criado para fins informativos. Para cálculos oficiais, consulte sempre a Autoridade Tributária ou um contabilista certificado. Os valores apresentados são estimativas baseadas nas tabelas de retenção na fonte e podem diferir do valor final de IRS a pagar/receber.</p>
-          </div>
-        </details>
-      </div>
-    </section>
-
-    <!-- Legal Disclaimer -->
-    <footer class="disclaimer">
-      <p><em>Este simulador não substitui aconselhamento fiscal profissional. Para informações precisas e atualizadas, consulte um contabilista certificado ou a Autoridade Tributária. Os cálculos baseiam-se nas tabelas de retenção na fonte e podem não refletir o valor final de IRS.</em></p>
-      <p class="copyright">© 2024 - Criado por <a href="https://x.com/mbatalhamusic" target="_blank" rel="noopener">Miguel Batalha</a></p>
-    </footer>
-
-    <!-- Author Badge -->
     <div id="authorBadge" class="author-badge">
-      <a href="https://x.com/mbatalhamusic" target="_blank" rel="noopener">
+      <a href="https://x.com/mbatalhamusic" target="_blank">
         <img id="authorAvatar" class="author-avatar" alt="Miguel Batalha" />
         <span>by Miguel Batalha</span>
       </a>
     </div>
-  </main>
-
-  <!-- Mobile Bottom Sheet for Results -->
-  <div id="mobileResultsSheet" class="mobile-results-sheet" aria-hidden="true">
-    <div class="sheet-handle"></div>
-    <div class="sheet-content">
-      <!-- Swipeable results will be injected here -->
-    </div>
   </div>
-
-  <!-- Toast Notifications -->
-  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module" src="script.js"></script>
-
-  <!-- PWA Service Worker Registration -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch(() => {});
-      });
-    }
-  </script>
-
   <!-- 100% privacy-first analytics -->
   <script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
-  <noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif" alt="" referrerpolicy="no-referrer-when-downgrade" /></noscript>
+  <noscript>
+    <img src="https://queue.simpleanalyticscdn.com/noscript.gif" alt=""
+    referrerpolicy="no-referrer-when-downgrade" />
+</noscript>
 </body>
 
 </html>
