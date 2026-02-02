@@ -21,7 +21,12 @@ const CONFIG = {
   IRS_JOVEM_LIMITE_ANUAL: 28737.50, // 50 x IAS
   VIATURA_TAXA_MENSAL: 0.0075, // 0.75% do valor por mês
   DEBOUNCE_DELAY: 300,
+  MAX_SALARY: 1000000, // Maximum reasonable salary for validation
+  MIN_SALARY: 0,
 };
+
+// Check for reduced motion preference
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // Supabase initialization
 const supabaseUrl = 'https://lauaziguiohgnbidupoz.supabase.co';
@@ -301,7 +306,20 @@ function renderSavedSimulations() {
   const saveBtn = document.getElementById('saveSimulation');
 
   if (state.savedSimulations.length === 0) {
-    container.innerHTML = '<p class="empty-state">Nenhuma simulação guardada. Clique em "Guardar" após calcular para guardar uma simulação.</p>';
+    container.innerHTML = `
+      <div class="empty-state">
+        <span class="material-symbols-outlined empty-state-icon">bookmark_border</span>
+        <p class="empty-state-title">Nenhuma simulação guardada</p>
+        <p class="empty-state-description">Guarde as suas simulações para comparar diferentes cenários ou aceder rapidamente mais tarde.</p>
+        <button type="button" class="empty-state-cta" id="emptyStateSaveBtn">
+          <span class="material-symbols-outlined">bookmark_add</span>
+          Guardar Simulação Atual
+        </button>
+      </div>
+    `;
+
+    // Add event listener to the CTA button
+    document.getElementById('emptyStateSaveBtn')?.addEventListener('click', saveCurrentSimulation);
     return;
   }
 
@@ -391,14 +409,61 @@ function getFormData() {
 function validateForm(data) {
   const errors = [];
   const errorEl = document.getElementById('rendimento-error');
+  const rendimentoInput = document.getElementById('rendimentoBruto');
 
+  // Clear previous errors
+  errorEl.textContent = '';
+  rendimentoInput.classList.remove('error');
+
+  // Validate main income field
   if (!data.rendimentoBruto || data.rendimentoBruto <= 0) {
     errors.push('Insira um valor de rendimento válido');
     errorEl.textContent = 'Insira um valor de rendimento válido';
-    document.getElementById('rendimentoBruto').classList.add('error');
-  } else {
-    errorEl.textContent = '';
-    document.getElementById('rendimentoBruto').classList.remove('error');
+    rendimentoInput.classList.add('error');
+  } else if (data.rendimentoBruto < 0) {
+    errors.push('O valor não pode ser negativo');
+    errorEl.textContent = 'O valor não pode ser negativo';
+    rendimentoInput.classList.add('error');
+  } else if (data.rendimentoBruto > CONFIG.MAX_SALARY) {
+    errors.push('Valor muito elevado. Verifique o valor introduzido.');
+    errorEl.textContent = 'Valor muito elevado. Verifique o valor introduzido.';
+    rendimentoInput.classList.add('error');
+  }
+
+  // Validate food allowance (should be reasonable daily amount)
+  if (data.subsidioAlimentacao < 0) {
+    showToast('O subsídio de alimentação não pode ser negativo', 'error');
+    errors.push('Subsídio de alimentação inválido');
+  } else if (data.subsidioAlimentacao > 50) {
+    showToast('O valor do subsídio de alimentação parece muito elevado. Verifique se é o valor diário.', 'error');
+    errors.push('Subsídio de alimentação muito elevado');
+  }
+
+  // Validate vehicle value if company car is selected
+  if (data.viaturaEmpresa && data.valorViatura <= 0) {
+    showToast('Introduza o valor da viatura', 'error');
+    errors.push('Valor da viatura obrigatório');
+  } else if (data.valorViatura > 500000) {
+    showToast('O valor da viatura parece muito elevado', 'error');
+    errors.push('Valor da viatura muito elevado');
+  }
+
+  // Validate other benefits
+  if (data.outrosBeneficios < 0) {
+    showToast('O valor de outros benefícios não pode ser negativo', 'error');
+    errors.push('Outros benefícios inválido');
+  }
+
+  // Validate health insurance
+  if (data.seguroSaude < 0) {
+    showToast('O valor do seguro de saúde não pode ser negativo', 'error');
+    errors.push('Seguro de saúde inválido');
+  }
+
+  // Validate remote work allowance
+  if (data.subsidioTeletrabalho < 0) {
+    showToast('O subsídio de teletrabalho não pode ser negativo', 'error');
+    errors.push('Subsídio de teletrabalho inválido');
   }
 
   return errors.length === 0;
@@ -968,7 +1033,10 @@ function exibirResultados(results) {
   }, 100);
 
   // Scroll to results
-  container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  container.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
+
+  // Show mobile bottom sheet on mobile devices
+  showMobileResults();
 }
 
 function setupPeriodToggle() {
@@ -1039,7 +1107,7 @@ function gerarGrafico(canvasId, salarioBruto, irs, segurancaSocial, isIL = false
     options: {
       indexAxis: 'y',
       animation: {
-        duration: 800,
+        duration: prefersReducedMotion ? 0 : 800,
         easing: 'easeOutQuart'
       },
       scales: {
@@ -1236,6 +1304,9 @@ function compareHistorical() {
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      animation: {
+        duration: prefersReducedMotion ? 0 : 800,
+      },
       plugins: {
         legend: { display: true },
         tooltip: {
@@ -1572,6 +1643,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Save simulation
   document.getElementById('saveSimulation')?.addEventListener('click', saveCurrentSimulation);
+  document.getElementById('emptyStateSaveBtn')?.addEventListener('click', saveCurrentSimulation);
 
   // Job comparison
   document.getElementById('compareJobs')?.addEventListener('click', compareJobs);
@@ -1616,6 +1688,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // Author avatar
   fetchAuthorAvatar();
 
+  // Initialize collapsible form sections
+  initCollapsibleSections();
+
+  // Initialize keyboard shortcuts
+  initKeyboardShortcuts();
+
+  // Initialize tooltip touch support
+  initTooltipTouchSupport();
+
   // Initial calculation
   calcularSalarioLiquido();
 
@@ -1632,6 +1713,128 @@ async function fetchAuthorAvatar() {
   } catch (e) {
     console.error('Error fetching avatar:', e);
   }
+}
+
+// ============================================
+// Collapsible Form Sections
+// ============================================
+
+function initCollapsibleSections() {
+  const formCards = document.querySelectorAll('.form-card');
+
+  formCards.forEach((card, index) => {
+    card.classList.add('collapsible');
+
+    // Wrap content in a div for animation
+    const content = document.createElement('div');
+    content.className = 'card-content';
+
+    // Move all children except the title into content wrapper
+    const title = card.querySelector('.card-title');
+    const children = Array.from(card.children).filter(child => child !== title);
+    children.forEach(child => content.appendChild(child));
+    card.appendChild(content);
+
+    // Add click handler to title
+    title.addEventListener('click', () => {
+      card.classList.toggle('collapsed');
+
+      // Update ARIA attributes
+      const isCollapsed = card.classList.contains('collapsed');
+      title.setAttribute('aria-expanded', !isCollapsed);
+      content.setAttribute('aria-hidden', isCollapsed);
+    });
+
+    // Add keyboard support
+    title.setAttribute('tabindex', '0');
+    title.setAttribute('role', 'button');
+    title.setAttribute('aria-expanded', 'true');
+    content.setAttribute('aria-hidden', 'false');
+
+    title.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        title.click();
+      }
+    });
+  });
+}
+
+// ============================================
+// Keyboard Shortcuts
+// ============================================
+
+function initKeyboardShortcuts() {
+  const shortcuts = {
+    'Alt+1': () => handleQuickAction('minWage'),
+    'Alt+2': () => handleQuickAction('raise10'),
+    'Alt+3': () => handleQuickAction('raise20'),
+    'Alt+4': () => handleQuickAction('addDependent'),
+    'Alt+c': () => calcularSalarioLiquido(),
+    'Alt+s': () => saveCurrentSimulation(),
+    'Alt+l': () => shareLink(),
+    'Alt+d': () => toggleTheme(),
+  };
+
+  document.addEventListener('keydown', (e) => {
+    const key = `${e.altKey ? 'Alt+' : ''}${e.key}`;
+
+    if (shortcuts[key]) {
+      e.preventDefault();
+      shortcuts[key]();
+    }
+  });
+
+  // Add keyboard shortcut hints to quick action buttons
+  const quickActionBtns = document.querySelectorAll('.quick-action-btn');
+  const shortcutHints = {
+    'minWage': 'Alt+1',
+    'raise10': 'Alt+2',
+    'raise20': 'Alt+3',
+    'addDependent': 'Alt+4',
+  };
+
+  quickActionBtns.forEach(btn => {
+    const action = btn.dataset.action;
+    if (shortcutHints[action]) {
+      const kbd = document.createElement('span');
+      kbd.className = 'kbd';
+      kbd.textContent = shortcutHints[action];
+      btn.appendChild(kbd);
+    }
+  });
+}
+
+// ============================================
+// Tooltip Touch Support
+// ============================================
+
+function initTooltipTouchSupport() {
+  const tooltips = document.querySelectorAll('.tooltip-trigger[data-tooltip]');
+
+  tooltips.forEach(tooltip => {
+    // Add touch support - toggle on tap
+    tooltip.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+
+      // Close other open tooltips
+      tooltips.forEach(t => {
+        if (t !== tooltip) {
+          t.classList.remove('tooltip-active');
+        }
+      });
+
+      // Toggle this tooltip
+      tooltip.classList.toggle('tooltip-active');
+    });
+
+    // Close tooltip when clicking outside
+    document.addEventListener('touchstart', (e) => {
+      if (!tooltip.contains(e.target)) {
+        tooltip.classList.remove('tooltip-active');
+      }
+    });
+  });
 }
 
 // Export for testing

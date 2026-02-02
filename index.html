@@ -457,7 +457,15 @@
         Simulações Guardadas
       </h2>
       <div id="savedSimulations" class="saved-simulations">
-        <p class="empty-state">Nenhuma simulação guardada. Clique em "Guardar" após calcular para guardar uma simulação.</p>
+        <div class="empty-state">
+          <span class="material-symbols-outlined empty-state-icon">bookmark_border</span>
+          <p class="empty-state-title">Nenhuma simulação guardada</p>
+          <p class="empty-state-description">Guarde as suas simulações para comparar diferentes cenários ou aceder rapidamente mais tarde.</p>
+          <button type="button" class="empty-state-cta" id="emptyStateSaveBtn">
+            <span class="material-symbols-outlined">bookmark_add</span>
+            Guardar Simulação Atual
+          </button>
+        </div>
       </div>
       <button type="button" id="saveSimulation" class="secondary-btn" style="display: none;">
         <span class="material-symbols-outlined">bookmark_add</span>

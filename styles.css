@@ -28,7 +28,7 @@
   /* Text */
   --text-primary: #1a1a2e;
   --text-secondary: #636981;
-  --text-tertiary: #8e92ae;
+  --text-tertiary: #6b6f85; /* Improved contrast - meets WCAG AA */
   --text-inverse: #ffffff;
 
   /* Borders */
@@ -87,7 +87,7 @@
 
   --text-primary: #f0f0f5;
   --text-secondary: #b8b8c8;
-  --text-tertiary: #8888a0;
+  --text-tertiary: #a0a0b8; /* Improved contrast - meets WCAG AA */
   --text-inverse: #1a1a2e;
 
   --border-color: #3a3a5c;
@@ -433,6 +433,46 @@ a:hover, a:focus {
   box-shadow: var(--shadow-md);
 }
 
+/* Collapsible Form Cards */
+.form-card.collapsible .card-title {
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  padding-right: 40px;
+}
+
+.form-card.collapsible .card-title::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2326538e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  transition: transform var(--transition-fast);
+}
+
+.form-card.collapsible.collapsed .card-title::after {
+  transform: translateY(-50%) rotate(-90deg);
+}
+
+.form-card.collapsible .card-content {
+  max-height: 2000px;
+  overflow: hidden;
+  transition: max-height var(--transition-slow), opacity var(--transition-normal);
+  opacity: 1;
+}
+
+.form-card.collapsible.collapsed .card-content {
+  max-height: 0;
+  opacity: 0;
+  padding: 0;
+  margin: 0;
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -543,9 +583,19 @@ a:hover, a:focus {
 }
 
 .tooltip-trigger[data-tooltip]:hover::after,
-.tooltip-trigger[data-tooltip]:focus::after {
+.tooltip-trigger[data-tooltip]:focus::after,
+.tooltip-trigger[data-tooltip]:focus-visible::after,
+.tooltip-trigger[data-tooltip].tooltip-active::after {
   opacity: 1;
   visibility: visible;
+}
+
+/* Touch device tooltip improvements */
+@media (pointer: coarse) {
+  .tooltip-trigger[data-tooltip] {
+    min-width: 44px;
+    min-height: 44px;
+  }
 }
 
 /* Input with Currency */
@@ -913,6 +963,24 @@ input[type="range"]::-moz-range-thumb {
   border-color: var(--color-primary);
   color: var(--color-primary);
   transform: translateY(-2px);
+}
+
+.quick-action-btn .kbd {
+  display: inline-block;
+  padding: 2px 6px;
+  margin-left: var(--spacing-xs);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-family: monospace;
+  color: var(--text-tertiary);
+}
+
+@media (pointer: coarse) {
+  .quick-action-btn .kbd {
+    display: none;
+  }
 }
 
 /* ========================================
@@ -1316,8 +1384,49 @@ input[type="range"]::-moz-range-thumb {
 .empty-state {
   text-align: center;
   color: var(--text-tertiary);
-  padding: var(--spacing-lg);
-  font-style: italic;
+  padding: var(--spacing-xl);
+  font-style: normal;
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  border: 2px dashed var(--border-color);
+}
+
+.empty-state-icon {
+  font-size: 48px;
+  color: var(--border-color);
+  margin-bottom: var(--spacing-md);
+}
+
+.empty-state-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.empty-state-description {
+  font-size: 0.875rem;
+  margin-bottom: var(--spacing-lg);
+}
+
+.empty-state-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background-color: var(--color-primary);
+  color: var(--text-inverse);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.empty-state-cta:hover {
+  background-color: var(--color-primary-dark);
+  transform: translateY(-2px);
 }
 
 /* Job Comparison */
