@@ -127,7 +127,10 @@
     "packageManager": "pnpm@8.13.0",
     "pnpm": {
         "overrides": {
-            "html-entities": "1.4.0"
+            "html-entities": "1.4.0",
+            "ws@>=6.0.0 <6.2.4": "6.2.4",
+            "ws@>=7.0.0 <7.5.11": "7.5.11",
+            "ws@>=8.0.0 <8.21.0": "8.21.0"
         },
         "peerDependencyRules": {
             "ignoreMissing": [
